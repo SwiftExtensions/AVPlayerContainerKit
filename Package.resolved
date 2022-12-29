@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "avplayerkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftExtensions/AVPlayerKit",
+      "state" : {
+        "revision" : "075e91054069509ef54bfde32f041f690336cc3b",
+        "version" : "0.0.2"
+      }
+    }
+  ],
+  "version" : 2
+}
