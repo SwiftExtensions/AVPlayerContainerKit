@@ -8,7 +8,7 @@
 import UIKit
 import AVPlayerContainerKit
 
-class PlayerContainerViewController: AVPlayerContainerViewController {
+final class PlayerContainerViewController: AVPlayerContainerViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,12 +37,13 @@ extension UINavigationController {
 ## Пример интеграции с плеером
 
 ``` swift
-import UIKit
 import AVFoundation
+import UIKit
+
 import AVPlayerKit
 import AVPlayerContainerKit
 
-class PlayerContainerViewController: AVPlayerContainerViewController {
+final class PlayerContainerViewController: AVPlayerContainerViewController {
     // Представление плеера
     var playerView: PlayerView! {
         (self.playerViewController as! PlayerViewController).playerView
