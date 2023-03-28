@@ -9,10 +9,10 @@ open class AVPlayerContainerViewController: UIViewController {
     public static var playerPresentAnimationDuration = Constant.playerPresentAnimationDuration
     
     public private(set) weak var playerViewController: UIViewController!
-    public private(set) weak var streamsViewController: UIViewController!
+    public private(set) weak var secondaryViewController: UIViewController!
     
     private var playerViewContainerConstraints = [NSLayoutConstraint]()
-    private var streamsViewControllerConstraints = [NSLayoutConstraint]()
+    private var secondaryViewControllerConstraints = [NSLayoutConstraint]()
     
     private var isPlayerViewControllerPresented = false
     
@@ -22,19 +22,19 @@ open class AVPlayerContainerViewController: UIViewController {
     }
     
     public func addChildWithDefaultPlayerViewController(
-        streamsViewController: UIViewController,
+        secondaryViewController: UIViewController,
         isPlayerViewControllerPresented: Bool)
     {
         self.addChilds(
             playerViewController: PlayerViewController(),
-            streamsViewController: streamsViewController,
+            secondaryViewController: secondaryViewController,
             isPlayerViewControllerPresented: isPlayerViewControllerPresented)
         self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && !UIScreen.main.bounds.size.isPortraiteOrientation
     }
     
     public func addChilds(
         playerViewController: UIViewController,
-        streamsViewController: UIViewController,
+        secondaryViewController: UIViewController,
         isPlayerViewControllerPresented: Bool)
     {
         self.isPlayerViewControllerPresented = isPlayerViewControllerPresented
@@ -48,13 +48,13 @@ open class AVPlayerContainerViewController: UIViewController {
         NSLayoutConstraint.activate(self.playerViewContainerConstraints)
         playerViewController.didMove(toParent: self)
         
-        self.streamsViewController = streamsViewController
-        self.addChild(streamsViewController)
-        self.view.addSubview(streamsViewController.view)
-        streamsViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        self.setupStreamsViewControllerConstraints(streamsViewController, isPortraiteOrientation: isPortraiteOrientation)
-        NSLayoutConstraint.activate(self.streamsViewControllerConstraints)
-        streamsViewController.didMove(toParent: self)
+        self.secondaryViewController = secondaryViewController
+        self.addChild(secondaryViewController)
+        self.view.addSubview(secondaryViewController.view)
+        secondaryViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        self.setupSecondaryViewControllerConstraints(secondaryViewController, isPortraiteOrientation: isPortraiteOrientation)
+        NSLayoutConstraint.activate(self.secondaryViewControllerConstraints)
+        secondaryViewController.didMove(toParent: self)
     }
     
     private func setupPlayerViewControllerConstraints(_ playerViewController: UIViewController, isPortraiteOrientation: Bool) {
@@ -93,30 +93,30 @@ open class AVPlayerContainerViewController: UIViewController {
         }
     }
     
-    private func setupStreamsViewControllerConstraints(_ streamsViewController: UIViewController, isPortraiteOrientation: Bool) {
-        let streamsViewContainer = streamsViewController.view!
+    private func setupSecondaryViewControllerConstraints(_ secondaryViewController: UIViewController, isPortraiteOrientation: Bool) {
+        let secondaryViewContainer = secondaryViewController.view!
         if isPortraiteOrientation {
-            let streamsViewContainerBottomConstraint = streamsViewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            let streamsViewContainerBottomConstraint = secondaryViewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             streamsViewContainerBottomConstraint.priority = .defaultHigh
-            self.streamsViewControllerConstraints = [
-                streamsViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
-                streamsViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                streamsViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            self.secondaryViewControllerConstraints = [
+                secondaryViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
+                secondaryViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                secondaryViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
                 streamsViewContainerBottomConstraint,
             ]
         } else {
-            self.streamsViewControllerConstraints = [
-                streamsViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
-                streamsViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                streamsViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-                streamsViewContainer.heightAnchor.constraint(equalTo: self.view.heightAnchor)
+            self.secondaryViewControllerConstraints = [
+                secondaryViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
+                secondaryViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                secondaryViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+                secondaryViewContainer.heightAnchor.constraint(equalTo: self.view.heightAnchor)
             ]
         }
     }
     
     private func setupContainers(isPortraiteOrientation: Bool) {
         self.setupPlayerViewControllerConstraints(self.playerViewController, isPortraiteOrientation: isPortraiteOrientation)
-        self.setupStreamsViewControllerConstraints(self.streamsViewController, isPortraiteOrientation: isPortraiteOrientation)
+        self.setupSecondaryViewControllerConstraints(self.secondaryViewController, isPortraiteOrientation: isPortraiteOrientation)
     }
     
     open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -131,9 +131,9 @@ open class AVPlayerContainerViewController: UIViewController {
         // prefersHomeIndicatorAutoHidden
         super.viewWillTransition(to: size, with: coordinator)
         
-        NSLayoutConstraint.deactivate(self.playerViewContainerConstraints + self.streamsViewControllerConstraints)
+        NSLayoutConstraint.deactivate(self.playerViewContainerConstraints + self.secondaryViewControllerConstraints)
         self.setupContainers(isPortraiteOrientation: size.isPortraiteOrientation)
-        NSLayoutConstraint.activate(self.playerViewContainerConstraints + self.streamsViewControllerConstraints)
+        NSLayoutConstraint.activate(self.playerViewContainerConstraints + self.secondaryViewControllerConstraints)
     }
     
     public func presentPlayerViewContainerWithAnimation() {
