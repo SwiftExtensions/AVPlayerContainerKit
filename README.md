@@ -13,11 +13,11 @@ final class PlayerContainerViewController: AVPlayerContainerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Контроллер представления списка потоков
-        let streams = UIViewController()
+        // Вспомогательный контроллер представления
+        let secondaryViewController = UIViewController()
         // Добавить контроллеры представлений в контейнер
         self.addChildWithDefaultPlayerViewController(
-            streamsViewController: streams, 
+            secondaryViewController: secondaryViewController,
             isPlayerViewControllerPresented: true)
     }
 
@@ -52,11 +52,11 @@ final class PlayerContainerViewController: AVPlayerContainerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Контроллер представления списка потоков
-        let streams = UIViewController()
+        // Вспомогательный контроллер представления
+        let secondaryViewController = UIViewController()
         // Добавить контроллеры представлений в контейнер
         self.addChildWithDefaultPlayerViewController(
-            streamsViewController: streams,
+            secondaryViewController: secondaryViewController,
             isPlayerViewControllerPresented: true)
         // Добавить плеер
         self.setupPlayer()
