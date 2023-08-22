@@ -1,14 +1,14 @@
 //
-//  CGSize.swift
-//  
+//  CGRect.swift
+//
 
 import CoreGraphics
 
-extension CGSize {
+extension CGRect {
     @inlinable
     @inline(__always)
     var isPortraiteOrientation: Bool {
-        self.height > self.width
+        self.size.isPortraiteOrientation
     }
     
     

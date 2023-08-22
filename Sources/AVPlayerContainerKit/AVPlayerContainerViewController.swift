@@ -29,7 +29,7 @@ open class AVPlayerContainerViewController: UIViewController {
             playerViewController: PlayerViewController(),
             secondaryViewController: secondaryViewController,
             isPlayerViewControllerPresented: isPlayerViewControllerPresented)
-        self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && !UIScreen.main.bounds.size.isPortraiteOrientation
+        self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && !UIScreen.main.bounds.isPortraiteOrientation
     }
     
     public func addChilds(
@@ -38,7 +38,7 @@ open class AVPlayerContainerViewController: UIViewController {
         isPlayerViewControllerPresented: Bool)
     {
         self.isPlayerViewControllerPresented = isPlayerViewControllerPresented
-        let isPortraiteOrientation = UIScreen.main.bounds.size.isPortraiteOrientation
+        let isPortraiteOrientation = UIScreen.main.bounds.isPortraiteOrientation
         
         self.playerViewController = playerViewController
         self.addChild(playerViewController)
@@ -141,7 +141,7 @@ open class AVPlayerContainerViewController: UIViewController {
         
         self.isPlayerViewControllerPresented = true
         let playerViewContainer = self.playerViewController.view!
-        if UIScreen.main.bounds.size.isPortraiteOrientation {
+        if UIScreen.main.bounds.isPortraiteOrientation {
             UIView.animate(withDuration: AVPlayerContainerViewController.playerPresentAnimationDuration) {
                 self.playerViewContainerConstraints[3].isActive = false
                 self.playerViewContainerConstraints[3] = playerViewContainer.heightAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: Constant.playerAspectRatio)
