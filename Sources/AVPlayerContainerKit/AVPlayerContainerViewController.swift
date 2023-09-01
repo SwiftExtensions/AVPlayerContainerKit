@@ -16,6 +16,8 @@ open class AVPlayerContainerViewController: UIViewController {
     
     private var isPlayerViewControllerPresented = false
     
+    private var isPortraiteOrientation: Bool { UIScreen.main.bounds.isPortraiteOrientation }
+    
     private var _prefersHomeIndicatorAutoHidden = false
     open override var prefersHomeIndicatorAutoHidden: Bool {
         self._prefersHomeIndicatorAutoHidden
@@ -29,7 +31,7 @@ open class AVPlayerContainerViewController: UIViewController {
             playerViewController: PlayerViewController(),
             secondaryViewController: secondaryViewController,
             isPlayerViewControllerPresented: isPlayerViewControllerPresented)
-        self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && !UIScreen.main.bounds.isPortraiteOrientation
+        self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && !self.isPortraiteOrientation
     }
     
     public func addChilds(
@@ -38,7 +40,7 @@ open class AVPlayerContainerViewController: UIViewController {
         isPlayerViewControllerPresented: Bool)
     {
         self.isPlayerViewControllerPresented = isPlayerViewControllerPresented
-        let isPortraiteOrientation = UIScreen.main.bounds.isPortraiteOrientation
+        let isPortraiteOrientation = self.isPortraiteOrientation
         
         self.playerViewController = playerViewController
         self.addChild(playerViewController)
@@ -141,7 +143,7 @@ open class AVPlayerContainerViewController: UIViewController {
         
         self.isPlayerViewControllerPresented = true
         let playerViewContainer = self.playerViewController.view!
-        if UIScreen.main.bounds.isPortraiteOrientation {
+        if self.isPortraiteOrientation {
             UIView.animate(withDuration: AVPlayerContainerViewController.playerPresentAnimationDuration) {
                 self.playerViewContainerConstraints[3].isActive = false
                 self.playerViewContainerConstraints[3] = playerViewContainer.heightAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: Constant.playerAspectRatio)
