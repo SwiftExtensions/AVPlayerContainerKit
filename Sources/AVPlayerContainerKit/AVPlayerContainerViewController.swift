@@ -12,7 +12,7 @@ open class AVPlayerContainerViewController: UIViewController {
     public private(set) weak var secondaryViewController: UIViewController!
     
     private var playerViewConstraints = [NSLayoutConstraint]()
-    private var secondaryViewControllerConstraints = [NSLayoutConstraint]()
+    private var secondaryViewConstraints = [NSLayoutConstraint]()
     
     private var isPlayerViewControllerPresented = false
     
@@ -57,7 +57,7 @@ open class AVPlayerContainerViewController: UIViewController {
             self.setupSecondaryViewControllerConstraints(
                 secondaryViewController,
                 isPortraiteOrientation: isPortraiteOrientation)
-            NSLayoutConstraint.activate(self.secondaryViewControllerConstraints)
+            NSLayoutConstraint.activate(self.secondaryViewConstraints)
         }
     }
     
@@ -102,14 +102,14 @@ open class AVPlayerContainerViewController: UIViewController {
         if isPortraiteOrientation {
             let streamsViewContainerBottomConstraint = secondaryViewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             streamsViewContainerBottomConstraint.priority = .defaultHigh
-            self.secondaryViewControllerConstraints = [
+            self.secondaryViewConstraints = [
                 secondaryViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
                 secondaryViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
                 secondaryViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
                 streamsViewContainerBottomConstraint,
             ]
         } else {
-            self.secondaryViewControllerConstraints = [
+            self.secondaryViewConstraints = [
                 secondaryViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
                 secondaryViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
                 secondaryViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
@@ -135,9 +135,9 @@ open class AVPlayerContainerViewController: UIViewController {
         // prefersHomeIndicatorAutoHidden
         super.viewWillTransition(to: size, with: coordinator)
         
-        NSLayoutConstraint.deactivate(self.playerViewConstraints + self.secondaryViewControllerConstraints)
+        NSLayoutConstraint.deactivate(self.playerViewConstraints + self.secondaryViewConstraints)
         self.setupContainers(isPortraiteOrientation: size.isPortraiteOrientation)
-        NSLayoutConstraint.activate(self.playerViewConstraints + self.secondaryViewControllerConstraints)
+        NSLayoutConstraint.activate(self.playerViewConstraints + self.secondaryViewConstraints)
     }
     
     public func presentPlayerViewContainerWithAnimation() {
