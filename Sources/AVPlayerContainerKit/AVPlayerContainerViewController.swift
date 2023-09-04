@@ -43,20 +43,22 @@ open class AVPlayerContainerViewController: UIViewController {
         let isPortraiteOrientation = self.isPortraiteOrientation
         
         self.playerViewController = playerViewController
-        self.addChild(playerViewController)
-        self.view.addSubview(playerViewController.view)
-        playerViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        self.setupPlayerViewControllerConstraints(playerViewController, isPortraiteOrientation: isPortraiteOrientation)
-        NSLayoutConstraint.activate(self.playerViewContainerConstraints)
-        playerViewController.didMove(toParent: self)
+        self.insertChild(playerViewController) { parentView, childView in
+            childView.translatesAutoresizingMaskIntoConstraints = false
+            self.setupPlayerViewControllerConstraints(
+                playerViewController,
+                isPortraiteOrientation: isPortraiteOrientation)
+            NSLayoutConstraint.activate(self.playerViewContainerConstraints)
+        }
         
         self.secondaryViewController = secondaryViewController
-        self.addChild(secondaryViewController)
-        self.view.addSubview(secondaryViewController.view)
-        secondaryViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        self.setupSecondaryViewControllerConstraints(secondaryViewController, isPortraiteOrientation: isPortraiteOrientation)
-        NSLayoutConstraint.activate(self.secondaryViewControllerConstraints)
-        secondaryViewController.didMove(toParent: self)
+        self.insertChild(secondaryViewController) { parentView, childView in
+            childView.translatesAutoresizingMaskIntoConstraints = false
+            self.setupSecondaryViewControllerConstraints(
+                secondaryViewController,
+                isPortraiteOrientation: isPortraiteOrientation)
+            NSLayoutConstraint.activate(self.secondaryViewControllerConstraints)
+        }
     }
     
     private func setupPlayerViewControllerConstraints(_ playerViewController: UIViewController, isPortraiteOrientation: Bool) {
