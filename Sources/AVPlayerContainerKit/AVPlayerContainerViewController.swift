@@ -31,7 +31,6 @@ open class AVPlayerContainerViewController: UIViewController {
             playerViewController: PlayerViewController(),
             secondaryViewController: secondaryViewController,
             isPlayerViewControllerPresented: isPlayerViewControllerPresented)
-        self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && !self.isPortraiteOrientation
     }
     
     public func addChilds(
@@ -55,13 +54,20 @@ open class AVPlayerContainerViewController: UIViewController {
             self.setupSecondaryViewConstraints(childView, isPortraiteOrientation: isPortraiteOrientation)
             NSLayoutConstraint.activate(self.secondaryViewConstraints)
         }
+        
+        self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && !self.isPortraiteOrientation
+        self.setupNavigationBarVisability(isPortraiteOrientation: self.isPortraiteOrientation)
+    }
+    
+    private func setupNavigationBarVisability(isPortraiteOrientation: Bool) {
+        let isNavigationBarHidden = self.isPlayerViewControllerPresented && !isPortraiteOrientation
+        self.navigationController?.setNavigationBarHidden(isNavigationBarHidden, animated: true)
     }
     
     private func setupPlayerViewConstraints(_ playerView: UIView, isPortraiteOrientation: Bool) {
         if isPortraiteOrientation {
             let playerHeightConstraint: NSLayoutConstraint
             if self.isPlayerViewControllerPresented {
-                self.navigationController?.setNavigationBarHidden(false, animated: true)
                 playerHeightConstraint = playerView.heightAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: Constant.playerAspectRatio)
             } else {
                 playerHeightConstraint = playerView.heightAnchor.constraint(equalToConstant: 0.0)
@@ -76,7 +82,6 @@ open class AVPlayerContainerViewController: UIViewController {
             let topAnchor: NSLayoutYAxisAnchor
             let playerHeightConstraint: NSLayoutConstraint
             if self.isPlayerViewControllerPresented {
-                self.navigationController?.setNavigationBarHidden(true, animated: true)
                 playerHeightConstraint = playerView.heightAnchor.constraint(equalTo: self.view.heightAnchor)
                 topAnchor = self.view.topAnchor
             } else {
@@ -112,11 +117,6 @@ open class AVPlayerContainerViewController: UIViewController {
         }
     }
     
-    private func setupContainers(isPortraiteOrientation: Bool) {
-        self.setupPlayerViewConstraints(self.playerViewController.view, isPortraiteOrientation: isPortraiteOrientation)
-        self.setupSecondaryViewConstraints(self.secondaryViewController.view, isPortraiteOrientation: isPortraiteOrientation)
-    }
-    
     open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         // Метод вызвается непосредственно перед запросом значения переменной
         // prefersHomeIndicatorAutoHidden
@@ -132,6 +132,12 @@ open class AVPlayerContainerViewController: UIViewController {
         NSLayoutConstraint.deactivate(self.playerViewConstraints + self.secondaryViewConstraints)
         self.setupContainers(isPortraiteOrientation: size.isPortraiteOrientation)
         NSLayoutConstraint.activate(self.playerViewConstraints + self.secondaryViewConstraints)
+        self.setupNavigationBarVisability(isPortraiteOrientation: size.isPortraiteOrientation)
+    }
+    
+    private func setupContainers(isPortraiteOrientation: Bool) {
+        self.setupPlayerViewConstraints(self.playerViewController.view, isPortraiteOrientation: isPortraiteOrientation)
+        self.setupSecondaryViewConstraints(self.secondaryViewController.view, isPortraiteOrientation: isPortraiteOrientation)
     }
     
     public func presentPlayerViewContainerWithAnimation() {
