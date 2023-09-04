@@ -62,19 +62,19 @@ open class AVPlayerContainerViewController: UIViewController {
     }
     
     private func setupPlayerViewControllerConstraints(_ playerViewController: UIViewController, isPortraiteOrientation: Bool) {
-        let playerViewContainer = playerViewController.view!
+        let playerView = playerViewController.view!
         if isPortraiteOrientation {
             let playerHeightConstraint: NSLayoutConstraint
             if self.isPlayerViewControllerPresented {
                 self.navigationController?.setNavigationBarHidden(false, animated: true)
-                playerHeightConstraint = playerViewContainer.heightAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: Constant.playerAspectRatio)
+                playerHeightConstraint = playerView.heightAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: Constant.playerAspectRatio)
             } else {
-                playerHeightConstraint = playerViewContainer.heightAnchor.constraint(equalToConstant: 0)
+                playerHeightConstraint = playerView.heightAnchor.constraint(equalToConstant: 0)
             }
             self.playerViewConstraints = [
-                playerViewContainer.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor),
-                playerViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                playerViewContainer.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+                playerView.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor),
+                playerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                playerView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
                 playerHeightConstraint
             ]
         } else {
@@ -82,38 +82,38 @@ open class AVPlayerContainerViewController: UIViewController {
             let playerHeightConstraint: NSLayoutConstraint
             if self.isPlayerViewControllerPresented {
                 self.navigationController?.setNavigationBarHidden(true, animated: true)
-                playerHeightConstraint = playerViewContainer.heightAnchor.constraint(equalTo: self.view.heightAnchor)
+                playerHeightConstraint = playerView.heightAnchor.constraint(equalTo: self.view.heightAnchor)
                 topAnchor = self.view.topAnchor
             } else {
-                playerHeightConstraint = playerViewContainer.heightAnchor.constraint(equalToConstant: 0)
+                playerHeightConstraint = playerView.heightAnchor.constraint(equalToConstant: 0)
                 topAnchor = self.view.safeAreaTopAnchor
             }
             self.playerViewConstraints = [
-                playerViewContainer.topAnchor.constraint(equalTo: topAnchor),
-                playerViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                playerViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+                playerView.topAnchor.constraint(equalTo: topAnchor),
+                playerView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                playerView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
                 playerHeightConstraint
             ]
         }
     }
     
     private func setupSecondaryViewControllerConstraints(_ secondaryViewController: UIViewController, isPortraiteOrientation: Bool) {
-        let secondaryViewContainer = secondaryViewController.view!
+        let secondaryView = secondaryViewController.view!
         if isPortraiteOrientation {
-            let streamsViewContainerBottomConstraint = secondaryViewContainer.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            let streamsViewContainerBottomConstraint = secondaryView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             streamsViewContainerBottomConstraint.priority = .defaultHigh
             self.secondaryViewConstraints = [
-                secondaryViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
-                secondaryViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                secondaryViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+                secondaryView.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
+                secondaryView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                secondaryView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
                 streamsViewContainerBottomConstraint,
             ]
         } else {
             self.secondaryViewConstraints = [
-                secondaryViewContainer.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
-                secondaryViewContainer.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                secondaryViewContainer.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-                secondaryViewContainer.heightAnchor.constraint(equalTo: self.view.heightAnchor)
+                secondaryView.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
+                secondaryView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+                secondaryView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+                secondaryView.heightAnchor.constraint(equalTo: self.view.heightAnchor)
             ]
         }
     }
