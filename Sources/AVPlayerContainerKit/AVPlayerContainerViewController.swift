@@ -45,9 +45,7 @@ open class AVPlayerContainerViewController: UIViewController {
         self.playerViewController = playerViewController
         self.insertChild(playerViewController) { parentView, childView in
             childView.translatesAutoresizingMaskIntoConstraints = false
-            self.setupPlayerViewControllerConstraints(
-                playerViewController,
-                isPortraiteOrientation: isPortraiteOrientation)
+            self.setupPlayerViewConstraints(childView, isPortraiteOrientation: isPortraiteOrientation)
             NSLayoutConstraint.activate(self.playerViewConstraints)
         }
         
@@ -61,8 +59,7 @@ open class AVPlayerContainerViewController: UIViewController {
         }
     }
     
-    private func setupPlayerViewControllerConstraints(_ playerViewController: UIViewController, isPortraiteOrientation: Bool) {
-        let playerView = playerViewController.view!
+    private func setupPlayerViewConstraints(_ playerView: UIView, isPortraiteOrientation: Bool) {
         if isPortraiteOrientation {
             let playerHeightConstraint: NSLayoutConstraint
             if self.isPlayerViewControllerPresented {
@@ -119,7 +116,7 @@ open class AVPlayerContainerViewController: UIViewController {
     }
     
     private func setupContainers(isPortraiteOrientation: Bool) {
-        self.setupPlayerViewControllerConstraints(self.playerViewController, isPortraiteOrientation: isPortraiteOrientation)
+        self.setupPlayerViewConstraints(self.playerViewController.view, isPortraiteOrientation: isPortraiteOrientation)
         self.setupSecondaryViewControllerConstraints(self.secondaryViewController, isPortraiteOrientation: isPortraiteOrientation)
     }
     
