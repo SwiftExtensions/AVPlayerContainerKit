@@ -64,7 +64,7 @@ open class AVPlayerContainerViewController: UIViewController {
                 self.navigationController?.setNavigationBarHidden(false, animated: true)
                 playerHeightConstraint = playerView.heightAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: Constant.playerAspectRatio)
             } else {
-                playerHeightConstraint = playerView.heightAnchor.constraint(equalToConstant: 0)
+                playerHeightConstraint = playerView.heightAnchor.constraint(equalToConstant: 0.0)
             }
             self.playerViewConstraints = [
                 playerView.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor),
@@ -80,7 +80,7 @@ open class AVPlayerContainerViewController: UIViewController {
                 playerHeightConstraint = playerView.heightAnchor.constraint(equalTo: self.view.heightAnchor)
                 topAnchor = self.view.topAnchor
             } else {
-                playerHeightConstraint = playerView.heightAnchor.constraint(equalToConstant: 0)
+                playerHeightConstraint = playerView.heightAnchor.constraint(equalToConstant: 0.0)
                 topAnchor = self.view.safeAreaTopAnchor
             }
             self.playerViewConstraints = [
@@ -94,13 +94,13 @@ open class AVPlayerContainerViewController: UIViewController {
     
     private func setupSecondaryViewConstraints(_ secondaryView: UIView, isPortraiteOrientation: Bool) {
         if isPortraiteOrientation {
-            let streamsViewContainerBottomConstraint = secondaryView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
-            streamsViewContainerBottomConstraint.priority = .defaultHigh
+            let secondaryViewBottomConstraint = secondaryView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+            secondaryViewBottomConstraint.priority = .defaultHigh
             self.secondaryViewConstraints = [
                 secondaryView.topAnchor.constraint(equalTo: self.playerViewController.view.bottomAnchor),
                 secondaryView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
                 secondaryView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-                streamsViewContainerBottomConstraint,
+                secondaryViewBottomConstraint,
             ]
         } else {
             self.secondaryViewConstraints = [
