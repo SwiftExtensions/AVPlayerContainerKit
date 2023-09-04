@@ -52,9 +52,7 @@ open class AVPlayerContainerViewController: UIViewController {
         self.secondaryViewController = secondaryViewController
         self.insertChild(secondaryViewController) { parentView, childView in
             childView.translatesAutoresizingMaskIntoConstraints = false
-            self.setupSecondaryViewControllerConstraints(
-                secondaryViewController,
-                isPortraiteOrientation: isPortraiteOrientation)
+            self.setupSecondaryViewConstraints(childView, isPortraiteOrientation: isPortraiteOrientation)
             NSLayoutConstraint.activate(self.secondaryViewConstraints)
         }
     }
@@ -94,8 +92,7 @@ open class AVPlayerContainerViewController: UIViewController {
         }
     }
     
-    private func setupSecondaryViewControllerConstraints(_ secondaryViewController: UIViewController, isPortraiteOrientation: Bool) {
-        let secondaryView = secondaryViewController.view!
+    private func setupSecondaryViewConstraints(_ secondaryView: UIView, isPortraiteOrientation: Bool) {
         if isPortraiteOrientation {
             let streamsViewContainerBottomConstraint = secondaryView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
             streamsViewContainerBottomConstraint.priority = .defaultHigh
@@ -117,7 +114,7 @@ open class AVPlayerContainerViewController: UIViewController {
     
     private func setupContainers(isPortraiteOrientation: Bool) {
         self.setupPlayerViewConstraints(self.playerViewController.view, isPortraiteOrientation: isPortraiteOrientation)
-        self.setupSecondaryViewControllerConstraints(self.secondaryViewController, isPortraiteOrientation: isPortraiteOrientation)
+        self.setupSecondaryViewConstraints(self.secondaryViewController.view, isPortraiteOrientation: isPortraiteOrientation)
     }
     
     open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
