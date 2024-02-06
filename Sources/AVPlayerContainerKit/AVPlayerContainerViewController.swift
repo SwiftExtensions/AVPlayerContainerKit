@@ -16,7 +16,7 @@ open class AVPlayerContainerViewController: UIViewController {
     
     private var isPlayerViewControllerPresented = false
     
-    private var isPortraiteOrientation: Bool { UIScreen.main.bounds.isPortraiteOrientation }
+    public var isPortraiteOrientation: Bool { UIScreen.main.bounds.isPortraiteOrientation }
     
     private var _prefersHomeIndicatorAutoHidden = false
     open override var prefersHomeIndicatorAutoHidden: Bool {
@@ -134,8 +134,18 @@ open class AVPlayerContainerViewController: UIViewController {
         NSLayoutConstraint.activate(self.playerViewConstraints + self.secondaryViewConstraints)
         self.setupNavigationBarVisability(isPortraiteOrientation: size.isPortraiteOrientation)
     }
+    /**
+     Уведомляет контейнер, что ориентация представления будет изменена.
+     
+     - Parameter isPortraiteOrientation: Новая ориентация контейнера представления.
+     
+     Метод ничего не делает в родительском классе. Вы можете безпрепятственно переписать этот метод для собственных задач,
+     связанных с изменение ориентации.
+     */
+    open func viewWillChangeOrientation(isPortraiteOrientation: Bool) { }
     
     private func setupContainers(isPortraiteOrientation: Bool) {
+        self.viewWillChangeOrientation(isPortraiteOrientation: isPortraiteOrientation)
         self.setupPlayerViewConstraints(self.playerViewController.view, isPortraiteOrientation: isPortraiteOrientation)
         self.setupSecondaryViewConstraints(self.secondaryViewController.view, isPortraiteOrientation: isPortraiteOrientation)
     }
