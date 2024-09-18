@@ -18,7 +18,8 @@ final class PlayerContainerViewController: AVPlayerContainerViewController {
         // Добавить контроллеры представлений в контейнер
         self.addChildWithDefaultPlayerViewController(
             secondaryViewController: secondaryViewController,
-            isPlayerViewControllerPresented: true)
+            isPlayerViewControllerPresented: true
+        )
     }
 
 
@@ -57,13 +58,14 @@ final class PlayerContainerViewController: AVPlayerContainerViewController {
         // Добавить контроллеры представлений в контейнер
         self.addChildWithDefaultPlayerViewController(
             secondaryViewController: secondaryViewController,
-            isPlayerViewControllerPresented: true)
+            isPlayerViewControllerPresented: true
+        )
         // Добавить плеер
         self.setupPlayer()
     }
     
     private func setupPlayer() {
-        let player = AVPlayer(urlString: URL_TO_STREAM)
+        let player = AVPlayer(urlString: "URL_TO_STREAM")
         self.playerView.player = player
     }
     
