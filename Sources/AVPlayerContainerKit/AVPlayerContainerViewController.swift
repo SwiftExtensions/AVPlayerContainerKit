@@ -5,10 +5,20 @@
 import UIKit
 import AVPlayerKit
 
-open class AVPlayerContainerViewController: UIViewController {
-    public static var playerPresentAnimationDuration = Constant.playerPresentAnimationDuration
+final class StaticPropertiesStorage {
+    private init() {}
     
-    public private(set) weak var playerViewController: UIViewController!
+    static var playerPresentAnimationDuration = Constant.playerPresentAnimationDuration
+}
+
+open class AVPlayerContainerViewController<Player>: UIViewController where Player : UIViewController {
+    
+    public static var playerPresentAnimationDuration: TimeInterval {
+        get { StaticPropertiesStorage.playerPresentAnimationDuration }
+        set { StaticPropertiesStorage.playerPresentAnimationDuration = newValue }
+    }
+    
+    public private(set) weak var playerViewController: Player!
     public private(set) weak var secondaryViewController: UIViewController!
     
     private var playerViewConstraints = [NSLayoutConstraint]()
@@ -25,19 +35,20 @@ open class AVPlayerContainerViewController: UIViewController {
     
     public func addChildWithDefaultPlayerViewController(
         secondaryViewController: UIViewController,
-        isPlayerViewControllerPresented: Bool)
-    {
+        isPlayerViewControllerPresented: Bool
+    ) where Player == PlayerViewController {
         self.addChilds(
             playerViewController: PlayerViewController(),
             secondaryViewController: secondaryViewController,
-            isPlayerViewControllerPresented: isPlayerViewControllerPresented)
+            isPlayerViewControllerPresented: isPlayerViewControllerPresented
+        )
     }
     
     public func addChilds(
-        playerViewController: UIViewController,
+        playerViewController: Player,
         secondaryViewController: UIViewController,
-        isPlayerViewControllerPresented: Bool)
-    {
+        isPlayerViewControllerPresented: Bool
+    ) {
         self.isPlayerViewControllerPresented = isPlayerViewControllerPresented
         let isPortraiteOrientation = self.isPortraiteOrientation
         
@@ -117,14 +128,20 @@ open class AVPlayerContainerViewController: UIViewController {
         }
     }
     
-    open override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    open override func willTransition(
+        to newCollection: UITraitCollection,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
         // Метод вызвается непосредственно перед запросом значения переменной
         // prefersHomeIndicatorAutoHidden
         self._prefersHomeIndicatorAutoHidden = self.isPlayerViewControllerPresented && UIDevice.current.orientation.isLandscape
         super.willTransition(to: newCollection, with: coordinator)
     }
     
-    open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    open override func viewWillTransition(
+        to size: CGSize,
+        with coordinator: UIViewControllerTransitionCoordinator
+    ) {
         // Метод вызвается после запроса значения переменной
         // prefersHomeIndicatorAutoHidden
         super.viewWillTransition(to: size, with: coordinator)

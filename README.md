@@ -8,7 +8,7 @@
 import UIKit
 import AVPlayerContainerKit
 
-final class PlayerContainerViewController: AVPlayerContainerViewController {
+final class PlayerContainerViewController: AVPlayerContainerViewController<UIViewController> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,10 +44,10 @@ import UIKit
 import AVPlayerKit
 import AVPlayerContainerKit
 
-final class PlayerContainerViewController: AVPlayerContainerViewController {
+final class PlayerContainerViewController: AVPlayerContainerViewController<PlayerViewController> {
     // Представление плеера
     var playerView: PlayerView! {
-        (self.playerViewController as! PlayerViewController).playerView
+        self.playerViewController.playerView
     }
 
     override func viewDidLoad() {
