@@ -41,6 +41,7 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
         self._prefersHomeIndicatorAutoHidden
     }
     
+    @available(iOS 13.0, *)
     public func addChildWithDefaultPlayerViewController(
         secondaryViewController: UIViewController,
         isPlayerViewControllerPresented: Bool
