@@ -11,6 +11,14 @@ final class StaticPropertiesStorage {
     static var playerPresentAnimationDuration = Constant.playerPresentAnimationDuration
 }
 
+/**
+ Контейнер для управления двумя дочерними контроллерами представления: плеером и вторичным контроллером.
+
+ Этот класс предоставляет функциональность для управления макетом и анимацией между двумя дочерними контроллерами
+ в зависимости от ориентации устройства. Плеер может быть представлен или скрыт с анимацией.
+
+ - Parameter Player: Тип контроллера плеера, который должен наследоваться от UIViewController
+ */
 open class AVPlayerContainerViewController<Player>: UIViewController where Player : UIViewController {
     
     public static var playerPresentAnimationDuration: TimeInterval {
