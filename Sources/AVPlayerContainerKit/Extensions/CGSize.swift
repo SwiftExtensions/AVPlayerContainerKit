@@ -7,7 +7,7 @@ import CoreGraphics
 extension CGSize {
     @inlinable
     @inline(__always)
-    var isPortraiteOrientation: Bool {
+    var isPortraite: Bool {
         self.height > self.width
     }
     
