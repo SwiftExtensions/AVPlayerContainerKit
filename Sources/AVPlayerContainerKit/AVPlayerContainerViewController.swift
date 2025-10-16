@@ -42,7 +42,7 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
     
     public func addChildWithDefaultPlayerViewController(
         secondaryViewController: UIViewController,
-        isPlayerViewControllerPresented: Bool
+        isPlayerViewControllerPresented: Bool = true
     ) where Player == PlayerViewController {
         self.addChilds(
             playerViewController: PlayerViewController(),
@@ -54,7 +54,7 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
     public func addChilds(
         playerViewController: Player,
         secondaryViewController: UIViewController,
-        isPlayerViewControllerPresented: Bool
+        isPlayerViewControllerPresented: Bool = true
     ) {
         self.playerViewController = playerViewController
         self.secondaryViewController = secondaryViewController
