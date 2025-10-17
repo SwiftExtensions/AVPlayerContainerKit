@@ -28,15 +28,17 @@ struct LayoutConstraintsController {
         secondaryView.translatesAutoresizingMaskIntoConstraints = false
         
         self.constraints = [
-            playerView.topAnchor.constraint(equalTo: rootView.safeAreaTopAnchor).bind(with: [.portrait, .landscapePlayerHidden]),
-            playerView.topAnchor.constraint(equalTo: rootView.topAnchor).bind(with: [.landscapePlayerPresented]),
+            playerView.topAnchor.constraint(equalTo: rootView.safeAreaTopAnchor).bind(with: .portraitPlayerPresented),
+            playerView.topAnchor.constraint(equalTo: rootView.topAnchor).bind(with: .landscapePlayerPresented),
             playerView.leftAnchor.constraint(equalTo: rootView.leftAnchor).bind(),
             playerView.widthAnchor.constraint(equalTo: rootView.widthAnchor).bind(),
-            playerView.heightAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: Constant.playerAspectRatio).bind(with: [.portraitPlayerPresented]),
-            playerView.heightAnchor.constraint(equalToConstant: 0.0).bind(with: [.portraitPlayerHidden, .landscapePlayerHidden]),
-            playerView.heightAnchor.constraint(equalTo: rootView.heightAnchor).bind(with: [.landscapePlayerPresented]),
+            playerView.heightAnchor.constraint(equalTo: rootView.widthAnchor, multiplier: Constant.playerAspectRatio).bind(with: [.portrait]),
+            playerView.heightAnchor.constraint(equalTo: rootView.heightAnchor).bind(with: [.landscape]),
+            playerView.bottomAnchor.constraint(equalTo: rootView.topAnchor).bind(with: [.portraitPlayerHidden, .landscapePlayerHidden]),
             
-            secondaryView.topAnchor.constraint(equalTo: playerView.bottomAnchor).bind(),
+            secondaryView.topAnchor.constraint(equalTo: playerView.bottomAnchor).bind(with: [.portraitPlayerPresented, .landscapePlayerPresented]),
+            secondaryView.topAnchor.constraint(equalTo: rootView.safeAreaTopAnchor).bind(with: .portraitPlayerHidden),
+            secondaryView.topAnchor.constraint(equalTo: rootView.topAnchor).bind(with: .landscapePlayerHidden),
             secondaryView.leadingAnchor.constraint(equalTo: rootView.leadingAnchor).bind(),
             secondaryView.trailingAnchor.constraint(equalTo: rootView.trailingAnchor).bind(),
             secondaryView.bottomAnchor.constraint(equalTo: rootView.bottomAnchor).setPriority(.defaultHigh).bind(with: .portrait),
