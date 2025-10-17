@@ -14,7 +14,7 @@ struct Constraint {
     /**
      Условия, при которых ограничение должно быть активно.
      */
-    let condition: Condition
+    let layoutState: LayoutState
     /**
      Оригинальное ограничение `NSLayoutConstraint`, на которое накладываются условия.
      */

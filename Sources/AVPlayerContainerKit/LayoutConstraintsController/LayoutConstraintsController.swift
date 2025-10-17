@@ -51,28 +51,28 @@ struct LayoutConstraintsController {
      - Parameter isPlayerPresented: Флаг отображения плеера на экране.
      */
     func updateLayout(isPortraite: Bool, isPlayerPresented: Bool) {
-        let condition: Constraint.Condition
+        let layoutState: Constraint.LayoutState
         switch (isPortraite, isPlayerPresented) {
         case (true, true):
-            condition = .portraitPlayerPresented
+            layoutState = .portraitPlayerPresented
         case (true, false):
-            condition = .portraitPlayerHidden
+            layoutState = .portraitPlayerHidden
         case (false, true):
-            condition = .landscapePlayerPresented
+            layoutState = .landscapePlayerPresented
         case (false, false):
-            condition = .landscapePlayerHidden
+            layoutState = .landscapePlayerHidden
         }
-        self.updateLayout(for: condition)
+        self.updateLayout(for: layoutState)
     }
     /**
      Активирует и деактивирует ограничения согласно переданному условию.
 
-     - Parameter condition: Условие, определяющее набор активных ограничений.
+     - Parameter layoutState: Условие, определяющее набор активных ограничений.
      */
-    private func updateLayout(for condition: Constraint.Condition) {
-        let deactivate = self.constraints.filter { !$0.condition.contains(condition) }.map(\.rawValue)
+    private func updateLayout(for layoutState: Constraint.LayoutState) {
+        let deactivate = self.constraints.filter { !$0.layoutState.contains(layoutState) }.map(\.rawValue)
         NSLayoutConstraint.deactivate(deactivate)
-        let activate = self.constraints.filter { $0.condition.contains(condition) }.map(\.rawValue)
+        let activate = self.constraints.filter { $0.layoutState.contains(layoutState) }.map(\.rawValue)
         NSLayoutConstraint.activate(activate)
     }
     
@@ -83,10 +83,10 @@ extension NSLayoutConstraint {
     /**
      Оборачивает ограничение в `Constraint`, сопоставляя его с условием активации.
 
-     - Parameter condition: Условие, при котором ограничение должно быть активно.
+     - Parameter layoutState: Условие, при котором ограничение должно быть активно.
      */
-    func bind(with condition: Constraint.Condition = .all) -> Constraint {
-        Constraint(condition: condition, rawValue: self)
+    func bind(with layoutState: Constraint.LayoutState = .all) -> Constraint {
+        Constraint(layoutState: layoutState, rawValue: self)
     }
     
     
