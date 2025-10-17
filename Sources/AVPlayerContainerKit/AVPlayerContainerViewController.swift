@@ -179,15 +179,19 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
     open func viewWillChangeOrientation(isPortraite: Bool) { }
     
     /**
-     Отображает плеер с анимацией и обновляет макет.
+     Меняет состояние отображения плеера и синхронизирует ограничения представлений.
+
+     - Parameter isPlayerPresented: Новое состояние отображения плеера.
+     - Parameter animated: Флаг анимации перехода между состояниями.
      */
-    public func presentPlayerViewContainerWithAnimation() {
-        if self.isPlayerPresented { return }
-        self.isPlayerPresented = true
+    public func updatePlayerState(isPlayerPresented: Bool, animated: Bool = true) {
+        if self.isPlayerPresented == isPlayerPresented { return }
+        self.isPlayerPresented = isPlayerPresented
         
-        UIView.animate(
-            withDuration: AVPlayerContainerViewController.playerPresentAnimationDuration
-        ) { [weak self, isPortraite, isPlayerPresented] in
+        let duration = animated
+        ? AVPlayerContainerViewController.playerPresentAnimationDuration
+        : 0.0
+        UIView.animate(withDuration: duration) { [weak self, isPortraite, isPlayerPresented] in
             self?.layoutController.updateLayout(
                 isPortraite: isPortraite,
                 isPlayerPresented: isPlayerPresented
