@@ -4,6 +4,7 @@
 
 import UIKit
 import AVPlayerKit
+import AVKit
 
 /**
  Хранилище общих параметров контейнера плеера.
@@ -184,7 +185,11 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
      - Parameter isPlayerPresented: Новое состояние отображения плеера.
      - Parameter animated: Флаг анимации перехода между состояниями.
      */
-    public func updatePlayerState(isPlayerPresented: Bool, animated: Bool = true) {
+    public func updatePlayerState(
+        isPlayerPresented: Bool,
+        animated: Bool = true,
+        completion: (() -> Void)? = nil
+    ) {
         if self.isPlayerPresented == isPlayerPresented { return }
         self.isPlayerPresented = isPlayerPresented
         
@@ -192,13 +197,72 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
         ? AVPlayerContainerViewController.playerPresentAnimationDuration
         : 0.0
         UIView.animate(withDuration: duration) { [weak self, isPortraite, isPlayerPresented] in
+            self?.playerViewController.view.alpha = isPlayerPresented ? 1.0 : 0.0
             self?.layoutController.updateLayout(
                 isPortraite: isPortraite,
                 isPlayerPresented: isPlayerPresented
             )
             self?.view.layoutIfNeeded()
+        } completion: { _ in
+            completion?()
+        }
+    }
+    /**
+     Включает режим «картинка-в-картинке».
+     Добавляет кнопку PiP в элементы управления плеера.
+     */
+    public func enablePictureInPicture() where Player: PlayerViewController {
+        self.playerViewController.enablePictureInPicture()
+        self.playerViewController.pictureInPictureControllerDataSource = self
+        self.playerViewController.setPictureInPictureControllerEventDelegate(self)
+    }
+    /**
+     Добавляет делегата для получения событий режима «картинка в картинке».
+     - Parameter delegate: Объект, реализующий `AVPictureInPictureControllerEventDelegate`.
+     */
+    public func setPictureInPictureControllerEventDelegate(
+        _ delegate: AVPictureInPictureControllerEventDelegate
+    ) where Player: PlayerViewController {
+        self.playerViewController.setPictureInPictureControllerEventDelegate(delegate)
+    }
+    
+    
+}
+
+// MARK: - AVPictureInPictureControllerDataSource
+
+extension AVPlayerContainerViewController: AVPictureInPictureControllerDataSource {
+    public func pictureInPictureController(
+        _ pictureInPictureController: AVPictureInPictureController,
+        restoreUserInterfaceForPictureInPictureStopWithCompletionHandler completionHandler: @escaping (Bool) -> Void
+    ) {
+//        print("\(Self.self).\(#function).\(#line)")
+        self.updatePlayerState(isPlayerPresented: true) {
+            DispatchQueue.main.asyncAfter(
+                deadline: .now() + AVPlayerContainerViewController.playerPresentAnimationDuration
+            ) {
+                completionHandler(true)
+            }
         }
     }
     
+    
+}
 
+// MARK: - AVPictureInPictureControllerEventDelegate
+
+extension AVPlayerContainerViewController: AVPictureInPictureControllerEventDelegate {
+    public func pictureInPictureController(
+        _ pictureInPictureController: AVPictureInPictureController,
+        event: AVPictureInPictureController.Event
+    ) {
+//        print("\(Self.self).\(#function).\(#line) \(event)")
+        if case .didStart = event {
+            self.updatePlayerState(isPlayerPresented: false)
+        }
+    }
+    
+    
+    
+    
 }
