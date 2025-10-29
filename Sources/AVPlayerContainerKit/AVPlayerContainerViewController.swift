@@ -196,16 +196,22 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
         let duration = animated
         ? AVPlayerContainerViewController.playerPresentAnimationDuration
         : 0.0
-        UIView.animate(withDuration: duration) { [weak self, isPortraite, isPlayerPresented] in
+        let animator = UIViewPropertyAnimator(
+            duration: duration,
+            curve: .easeInOut
+        )
+        animator.addAnimations { [weak self, isPortraite, isPlayerPresented] in
             self?.playerViewController.view.alpha = isPlayerPresented ? 1.0 : 0.0
             self?.layoutController.updateLayout(
                 isPortraite: isPortraite,
                 isPlayerPresented: isPlayerPresented
             )
             self?.view.layoutIfNeeded()
-        } completion: { _ in
-            completion?()
         }
+        if let completion {
+            animator.addCompletion { _ in completion() }
+        }
+        animator.startAnimation()
     }
     /**
      Включает режим «картинка-в-картинке».
