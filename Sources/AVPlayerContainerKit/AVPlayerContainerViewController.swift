@@ -199,8 +199,7 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
         let animator = UIViewPropertyAnimator(
             duration: duration,
             curve: .easeInOut
-        )
-        animator.addAnimations { [weak self, isPortraite, isPlayerPresented] in
+        ) { [weak self, isPortraite, isPlayerPresented] in
             self?.playerViewController.view.alpha = isPlayerPresented ? 1.0 : 0.0
             self?.layoutController.updateLayout(
                 isPortraite: isPortraite,
