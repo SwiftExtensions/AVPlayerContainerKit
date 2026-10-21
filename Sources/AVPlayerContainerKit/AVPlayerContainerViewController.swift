@@ -45,24 +45,23 @@ open class AVPlayerContainerViewController<Player>: UIViewController where Playe
     public private(set) weak var secondaryViewController: UIViewController!
     
     /**
-     Управляет ограничениями макета для плеера и вторичного представления.
-     */
-    private var layoutController: LayoutConstraintsController!
-    
-    /**
      Флаг, указывающий, отображается ли плеер на экране.
      */
-    private var isPlayerPresented = false
-    
+    public private(set) var isPlayerPresented = false
     /**
      Показывает, находится ли устройство в портретной ориентации.
      */
     public var isPortraite: Bool { UIScreen.main.bounds.isPortraite }
     
     /**
+     Управляет ограничениями макета для плеера и вторичного представления.
+     */
+    private var layoutController: LayoutConstraintsController!
+    /**
      Внутренний флаг для скрытия индикатора домашней панели.
      */
     private var _prefersHomeIndicatorAutoHidden = false
+    
     open override var prefersHomeIndicatorAutoHidden: Bool {
         self._prefersHomeIndicatorAutoHidden
     }
