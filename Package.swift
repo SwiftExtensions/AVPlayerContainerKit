@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/SwiftExtensions/AVPlayerKit", from: "2.2.0"),
+        .package(url: "https://github.com/SwiftExtensions/AVPlayerKit", from: "2.3.0"),
 //        .package(url: "https://github.com/SwiftExtensions/AVPlayerKit", branch: "main"),
     ],
     targets: [
