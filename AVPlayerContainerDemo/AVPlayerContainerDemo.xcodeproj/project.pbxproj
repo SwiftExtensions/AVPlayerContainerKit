@@ -19,7 +19,6 @@
 		FF07741E3073D359001D6D76 /* PlaylistLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07741D3073D359001D6D76 /* PlaylistLoader.swift */; };
 		FF07742430889401001D6D76 /* StreamCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07742330889401001D6D76 /* StreamCell.swift */; };
 		FF07742630889402001D6D76 /* StreamStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07742530889402001D6D76 /* StreamStore.swift */; };
-		FF07742830889403001D6D76 /* StreamValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07742730889403001D6D76 /* StreamValidator.swift */; };
 		FF07742A30889404001D6D76 /* PlaylistService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07742930889404001D6D76 /* PlaylistService.swift */; };
 		FF42037E3088939900C25C71 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42037D3088939900C25C71 /* Playlist.swift */; };
 		FF420380308C0A1000C25C71 /* ExtInf.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF42037F308C0A1000C25C71 /* ExtInf.swift */; };
@@ -44,7 +43,6 @@
 		FF07741D3073D359001D6D76 /* PlaylistLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistLoader.swift; sourceTree = "<group>"; };
 		FF07742330889401001D6D76 /* StreamCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamCell.swift; sourceTree = "<group>"; };
 		FF07742530889402001D6D76 /* StreamStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamStore.swift; sourceTree = "<group>"; };
-		FF07742730889403001D6D76 /* StreamValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamValidator.swift; sourceTree = "<group>"; };
 		FF07742930889404001D6D76 /* PlaylistService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistService.swift; sourceTree = "<group>"; };
 		FF42037D3088939900C25C71 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		FF42037F308C0A1000C25C71 /* ExtInf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtInf.swift; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 			children = (
 				FF07741B3073D213001D6D76 /* Stream.swift */,
 				FF07742530889402001D6D76 /* StreamStore.swift */,
-				FF07742730889403001D6D76 /* StreamValidator.swift */,
 			);
 			path = Stream;
 			sourceTree = "<group>";
@@ -236,7 +233,6 @@
 				FF07741C3073D213001D6D76 /* Stream.swift in Sources */,
 				FF07742430889401001D6D76 /* StreamCell.swift in Sources */,
 				FF07742630889402001D6D76 /* StreamStore.swift in Sources */,
-				FF07742830889403001D6D76 /* StreamValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
