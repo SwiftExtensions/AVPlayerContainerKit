@@ -5,6 +5,7 @@
 //  Created by Александр Алгашев on 05.10.2026.
 //
 
+import AVPlayerKit
 import Foundation
 
 /**
@@ -85,30 +86,9 @@ extension Stream {
     /**
      Состояние потока вещания.
      */
-    enum Status {
-        /**
-         Состояние неизвестно — поток ещё не проверялся.
-         */
-        case unknown
-        /**
-         Поток готов к воспроизведению.
-         */
-        case readyToPlay
-        /**
-         Воспроизведение невозможно из-за ошибки.
-
-         - Parameter error: Возникшая ошибка.
-         */
-        case failed(Error)
-        /**
-         Поток проверяется или обрабатывается.
-         */
-        case processing
+    typealias Status = AVAssetStatus
 
 
-    }
-    
-    
 }
 
 extension Stream.Status {

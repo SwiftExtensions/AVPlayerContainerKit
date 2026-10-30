@@ -5,6 +5,7 @@
 //  Created by Александр Алгашев on 21.10.2026.
 //
 
+import AVPlayerKit
 import Foundation
 
 /**
@@ -54,6 +55,20 @@ final class StreamStore {
      */
     func setStatus(_ status: Stream.Status, at indexPath: IndexPath) {
         self.groups[indexPath.section].streams[indexPath.row].status = status
+    }
+
+
+}
+
+// MARK: - Коллекция проверяемых ресурсов
+
+extension StreamStore: AVAssetStatusManageableItems {
+    typealias Index = IndexPath
+    func url(at index: IndexPath) -> URL {
+        self.stream(at: index).url
+    }
+    func status(at index: IndexPath) -> AVAssetStatus {
+        self.stream(at: index).status
     }
 
 

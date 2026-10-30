@@ -6,7 +6,7 @@
 //
 
 import AVFoundation
-import Foundation
+import AVPlayerKit
 
 /**
  Плейлист.
@@ -27,12 +27,12 @@ final class Playlist {
      */
     private let store = StreamStore()
     /**
-     Валидатор потоков вещания.
+     Валидатор ресурсов.
 
      Создаётся методом `validateRequestedStreams`; до его вызова равен `nil`,
      и запросы на проверку игнорируются.
      */
-    private var streamValidator: StreamValidator?
+    private var assetValidator: AVAssetValidator<StreamStore>?
 
     /**
      Загружает плейлист по указанному адресу и сохраняет все найденные потоки
@@ -92,7 +92,7 @@ extension Playlist {
      Проверяет потоки по очереди запросов и выдаёт пути строк элементов, у
      которых изменилось состояние.
 
-     Под каждый вызов создаётся новый валидатор потоков с указанным временем
+     Под каждый вызов создаётся новый валидатор ресурсов с указанным временем
      ожидания проверки.
 
      - Parameter timeout: Максимальное время ожидания проверки одного потока
@@ -102,9 +102,9 @@ extension Playlist {
     func validateRequestedStreams(
         timeout: TimeInterval = 5.0
     ) -> AsyncThrowingStream<IndexPath, any Error> {
-        let validator = StreamValidator(store: self.store, timeout: timeout)
-        self.streamValidator = validator
-        return validator.streamChanges()
+        let validator = AVAssetValidator(items: self.store, timeout: timeout)
+        self.assetValidator = validator
+        return validator.changes()
     }
     /**
      Запрашивает проверку потока по пути строки.
@@ -116,7 +116,7 @@ extension Playlist {
      - Parameter indexPath: Путь строки потока.
      */
     func requestValidation(at indexPath: IndexPath) {
-        self.streamValidator?.requestValidation(at: indexPath)
+        self.assetValidator?.requestValidation(at: indexPath)
     }
     /**
      Отменяет запрос на проверку потока по пути строки.
@@ -127,7 +127,7 @@ extension Playlist {
      - Parameter indexPath: Путь строки потока.
      */
     func cancelValidation(at indexPath: IndexPath) {
-        self.streamValidator?.cancelValidation(at: indexPath)
+        self.assetValidator?.cancelValidation(at: indexPath)
     }
     /**
      Назначает поток приоритетным для проверки по пути строки.
@@ -138,7 +138,7 @@ extension Playlist {
      - Parameter indexPath: Путь строки потока.
      */
     func prioritizeValidation(at indexPath: IndexPath) {
-        self.streamValidator?.prioritizeValidation(at: indexPath)
+        self.assetValidator?.prioritizeValidation(at: indexPath)
     }
 
 
