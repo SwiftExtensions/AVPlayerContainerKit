@@ -8,63 +8,6 @@
 import Foundation
 
 /**
- Ошибка воспроизведения без системной причины.
- */
-enum PlaybackError: Error {
-    /**
-     Причина ошибки неизвестна.
-     */
-    case unknown
-
-
-}
-
-extension PlaybackError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .unknown: "Неизвестная ошибка воспроизведения."
-        }
-
-
-    }
-
-
-}
-
-/**
- События плейлиста для отображения.
- */
-enum PlaylistEvent {
-    /**
-     Плейлист загружен.
-     */
-    case loaded
-    /**
-     Плейлист не удалось загрузить.
-
-     - Parameter error: Ошибка загрузки.
-     */
-    case loadingFailed(Error)
-    /**
-     Состояние потока изменилось.
-
-     - Parameter stream: Поток вещания с актуальным состоянием.
-     - Parameter indexPath: Путь строки потока в таблице.
-     */
-    case streamChanged(_ stream: Stream, indexPath: IndexPath)
-    /**
-     Запрошенный поток разрешён итоговым состоянием: готов к воспроизведению
-     или не удалось проверить.
-
-     - Parameter stream: Поток вещания с итоговым состоянием.
-     - Parameter indexPath: Путь строки потока в таблице.
-     */
-    case resolvedStream(_ stream: Stream, indexPath: IndexPath)
-
-
-}
-
-/**
  Сервис плейлиста.
 
  Оркестрирует работу плейлиста: загружает его по адресу, начинает проверку
@@ -77,27 +20,53 @@ final class PlaylistService {
      */
     var groups: [Group] { self.playlist.groups }
     /**
+     Нерабочие потоки (с ошибкой) скрыты из отображения плейлиста.
+
+     Настройка сохраняется в настройках отображения плейлиста.
+     */
+    var isFailedStreamsHidden: Bool { self.filter.isFailedStreamsHidden }
+    /**
+     Отфильтрованные группы потоков вещания для отображения в таблице.
+
+     При включённой настройке «скрывать нерабочие потоки» из групп исключаются
+     потоки с ошибкой, а опустевшие группы не отображаются.
+     */
+    var filteredGroups: [Group] {
+        self.filter.filterGroups(for: self.playlist.groups)
+    }
+    /**
+     Снимки состояния групп плейлиста для отображения в таблице.
+
+     При включённой настройке «скрывать нерабочие потоки» исключаются строки
+     потоков с ошибкой, а опустевшие группы не отображаются.
+     */
+    var groupSnapshots: [GroupSnapshot] {
+        self.filter.groupSnapshots(for: self.playlist.groups)
+    }
+    /**
      Последовательность событий плейлиста.
      */
     var events: AsyncStream<PlaylistEvent> {
-        AsyncStream { continuation in
-            self.eventContinuation = continuation
-        }
+        self.eventChannel.stream()
     }
-    
+
     /**
      Плейлист.
      */
     private let playlist = Playlist()
-    
+    /**
+     Отображение плейлиста.
+     */
+    private var filter = PlaylistFilter()
+    /**
+     Канал событий плейлиста.
+     */
+    private let eventChannel = EventChannel<PlaylistEvent>()
+
     /**
      Путь строки потока с приоритетной проверкой.
      */
     private var priorityIndexPath: IndexPath?
-    /**
-     Продолжение последовательности событий плейлиста.
-     */
-    private var eventContinuation: AsyncStream<PlaylistEvent>.Continuation?
     /**
      Задача работы сервиса.
      */
@@ -115,11 +84,23 @@ final class PlaylistService {
     }
     /**
      Возвращает поток по пути строки.
+
      - Parameter indexPath: Путь строки: секция — группа, строка — поток в ней.
      - Returns: Поток вещания.
      */
     func stream(at indexPath: IndexPath) -> Stream {
         self.playlist.stream(at: indexPath)
+    }
+    /**
+     Скрывает или показывает нерабочие потоки и сообщает о перезагрузке
+     плейлиста.
+
+     - Parameter hidden: Новое значение настройки.
+     */
+    func setFailedStreamsHidden(_ hidden: Bool) {
+        guard self.filter.isFailedStreamsHidden != hidden else { return }
+        self.filter.isFailedStreamsHidden = hidden
+        self.emit(.playlistChanged)
     }
     /**
      Запрашивает проверку потока по пути строки.
@@ -145,10 +126,10 @@ final class PlaylistService {
 
      - Parameter error: Ошибка воспроизведения. `nil`, если система
        не сообщила причину.
-     - Parameter indexPath: Путь строки потока.
+     - Parameter indexPath: Путь строки потока в плейлисте.
      */
     func streamPlaybackFailed(_ error: (any Error)?, at indexPath: IndexPath) {
-        let failure = error ?? PlaybackError.unknown
+        let failure = error ?? UnknownPlaybackError()
         self.playlist.setStatus(.failed(failure), at: indexPath)
         self.handleStatusChange(at: indexPath)
     }
@@ -159,7 +140,7 @@ final class PlaylistService {
      после проверки. Для потока с ошибкой назначается повторная внеочередная
      проверка. Готовый к воспроизведению поток разрешается сразу.
 
-     - Parameter indexPath: Путь строки потока.
+     - Parameter indexPath: Путь строки потока в плейлисте.
      */
     func resolveStreamStatus(at indexPath: IndexPath) {
         let stream = self.playlist.stream(at: indexPath)
@@ -179,6 +160,7 @@ final class PlaylistService {
             break
         }
     }
+
     /**
      Выполняет работу сервиса: загрузку плейлиста и обработку изменений
      состояния потоков.
@@ -201,11 +183,17 @@ final class PlaylistService {
 
      Для потока с запросом на воспроизведение сообщается событие
      воспроизведения, для остальных — событие изменения состояния.
+     Скрытый поток не отображается: его исчезновение или появление меняет
+     структуру таблицы — сообщается событие перезагрузки.
 
-     - Parameter indexPath: Путь строки потока.
+     - Parameter indexPath: Путь строки потока в плейлисте.
      */
     private func handleStatusChange(at indexPath: IndexPath) {
         let stream = self.playlist.stream(at: indexPath)
+        if self.filter.isHidden(stream) {
+            self.emit(.playlistChanged)
+            return
+        }
         switch stream.status {
         case .readyToPlay, .failed:
             // запрошенный поток разрешается событием после проверки
@@ -220,12 +208,12 @@ final class PlaylistService {
         }
     }
     /**
-     Выдаёт событие в последовательность событий плейлиста.
+     Выдаёт событие в канал событий плейлиста.
 
      - Parameter event: Событие плейлиста.
      */
     private func emit(_ event: PlaylistEvent) {
-        self.eventContinuation?.yield(event)
+        self.eventChannel.emit(event)
     }
 
 
