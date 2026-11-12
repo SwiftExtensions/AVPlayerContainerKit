@@ -44,7 +44,23 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
         )
         self.playerViewController.playerView.player = AVPlayer()
         self.playerViewController.playbackErrorDelegate = self
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "gearshape"),
+            style: .plain,
+            target: self,
+            action: #selector(showSettings)
+        )
         self.startPlaylist()
+    }
+
+    // MARK: - Actions
+
+    /**
+     Открывает экран настроек.
+     */
+    @objc private func showSettings() {
+        let controller = SettingsViewController(service: self.playlistService)
+        self.show(controller, sender: self)
     }
     /**
      Запускает работу сервиса плейлиста и наблюдение за его событиями.
@@ -52,8 +68,9 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
     private func startPlaylist() {
         let playlistURLString = "https://iptv-org.github.io/iptv/languages/rus.m3u"
         let url = URL(string: playlistURLString)!
-        self.playlistService.start(url: url)
+        // подписка на события раньше старта, чтобы не потерять первые события
         self.observePlaylistEvents()
+        self.playlistService.start(url: url)
     }
     /**
      Запускает наблюдение за событиями плейлиста и раздаёт их по назначению.
@@ -78,7 +95,7 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
         // отрисовку выполняет контроллер плейлиста
         self.playlistViewController?.handle(event)
         switch event {
-        case .loaded, .loadingFailed:
+        case .loaded, .loadingFailed, .playlistChanged:
             let count = self.playlistService.groups.reduce(0) { $0 + $1.streams.count }
             self.title = count > 0
             ? "Player Container Demo (\(count))"
