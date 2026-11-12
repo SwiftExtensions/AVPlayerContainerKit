@@ -19,6 +19,13 @@ import UIKit
  */
 class PlaylistViewController: UITableViewController {
     /**
+     Пути строк видимых ячеек в плейлисте, в порядке отображения сверху вниз.
+     */
+    var visiblePlaylistIndexPaths: [IndexPath] {
+        self.dataSource.normalized(self.indexPathsForVisibleRows).sorted()
+    }
+    
+    /**
      Сервис плейлиста.
      */
     private let playlistService: PlaylistService
@@ -50,6 +57,12 @@ class PlaylistViewController: UITableViewController {
         }
 
         return cell
+    }
+    /**
+     Пути строк видимых ячеек в таблице.
+     */
+    private var indexPathsForVisibleRows: [IndexPath] {
+        self.tableView.indexPathsForVisibleRows ?? []
     }
 
     /**
@@ -137,8 +150,7 @@ class PlaylistViewController: UITableViewController {
         self.dataSource.apply(snapshot, animatingDifferences: true)
         // строки, вошедшие в экран из-за изменения структуры, могли не получить
         // запросов на проверку — возобновляем их для всех видимых строк
-        for indexPath in self.tableView.indexPathsForVisibleRows ?? [] {
-            guard let playlistIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { continue }
+        for playlistIndexPath in self.dataSource.normalized(self.indexPathsForVisibleRows) {
             self.playlistService.requestValidation(at: playlistIndexPath)
         }
     }
@@ -170,11 +182,11 @@ class PlaylistViewController: UITableViewController {
      */
     private func requestValidationIfVisible(at indexPath: IndexPath) {
         let displayIndexPath = self.dataSource.indexPath(for: indexPath)
-        guard let displayIndexPath else { return }
-        
-        let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows ?? []
-        guard indexPathsForVisibleRows.contains(displayIndexPath) else { return }
-        
+        let indexPathsForVisibleRows = self.indexPathsForVisibleRows
+        guard let displayIndexPath,
+              indexPathsForVisibleRows.contains(displayIndexPath)
+        else { return }
+
         self.playlistService.requestValidation(at: indexPath)
     }
     /**
@@ -209,8 +221,8 @@ class PlaylistViewController: UITableViewController {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        guard let storeIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { return }
-        self.playlistService.requestValidation(at: storeIndexPath)
+        guard let playlistIndexPath = self.dataSource.normalized(indexPath) else { return }
+        self.playlistService.requestValidation(at: playlistIndexPath)
     }
 
     override func tableView(
@@ -218,16 +230,16 @@ class PlaylistViewController: UITableViewController {
         didEndDisplaying cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        guard let storeIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { return }
-        self.playlistService.cancelValidation(at: storeIndexPath)
-        if let logoURLString = self.playlistService.stream(at: storeIndexPath).attributes["tvg-logo"] {
+        guard let playlistIndexPath = self.dataSource.normalized(indexPath) else { return }
+        self.playlistService.cancelValidation(at: playlistIndexPath)
+        if let logoURLString = self.playlistService.stream(at: playlistIndexPath).attributes["tvg-logo"] {
             self.imageService.cancelLoading(from: logoURLString)
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let storeIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { return }
-        self.playlistService.resolveStreamStatus(at: storeIndexPath)
+        guard let playlistIndexPath = self.dataSource.normalized(indexPath) else { return }
+        self.playlistService.resolveStreamStatus(at: playlistIndexPath)
     }
     /**
      Показывает пользователю предупреждение.
@@ -277,10 +289,41 @@ class PlaylistViewController: UITableViewController {
             guard case .success(let image) = result else { return }
             // строка могла быть переиспользована под другой поток
             guard let displayIndexPath = self?.tableView.indexPath(for: cell) else { return }
-            guard self?.dataSource.itemIdentifier(for: displayIndexPath) == indexPath,
+            guard self?.dataSource.normalized(displayIndexPath) == indexPath,
                   self?.tableView.cellForRow(at: displayIndexPath) === cell else { return }
             cell.setLogo(image)
         }
+    }
+
+
+}
+
+// MARK: - UITableViewDiffableDataSource
+
+extension UITableViewDiffableDataSource where SectionIdentifierType == Int, ItemIdentifierType == IndexPath {
+    /**
+     Приводит путь строки таблицы к идентификатору элемента.
+
+     Идентификатор элемента — путь строки в плейлисте. `nil`, если путь строки
+     не соответствует элементу.
+
+     - Parameter indexPath: Путь строки в таблице.
+     - Returns: Идентификатор элемента.
+     */
+    func normalized(_ indexPath: IndexPath) -> IndexPath? {
+        self.itemIdentifier(for: indexPath)
+    }
+    /**
+     Приводит пути строк таблицы к идентификаторам элементов.
+
+     Идентификаторы элементов — пути строк в плейлисте. Пути строк, не
+     соответствующие элементам, отбрасываются.
+
+     - Parameter indexPaths: Пути строк в таблице.
+     - Returns: Идентификаторы элементов.
+     */
+    func normalized(_ indexPaths: [IndexPath]) -> [IndexPath] {
+        indexPaths.compactMap { self.itemIdentifier(for: $0) }
     }
 
 

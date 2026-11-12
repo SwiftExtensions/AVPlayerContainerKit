@@ -30,6 +30,20 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
      Путь строки воспроизводимого в данный момент потока.
      */
     private var currentStreamIndexPath: IndexPath?
+    /**
+     Текущий поток запущен автозапуском, а не выбором пользователя.
+
+     При ошибке воспроизведения автозапущенный поток заменяется следующим
+     готовым к воспроизведению.
+     */
+    private var isAutoplayedStream = false
+    /**
+     Воспроизведение текущего потока завершилось ошибкой.
+
+     Пока ошибка не заменена новым потоком, автозапуск продолжается:
+     ставший готовым к воспроизведению поток запускается автоматически.
+     */
+    private var isCurrentStreamFailed = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,6 +116,8 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
             : "Player Container Demo"
         case let .resolvedStream(stream, indexPath):
             guard case .readyToPlay = stream.status else { return }
+            // поток запущен выбором пользователя: автозапуск завершён
+            self.isAutoplayedStream = false
             if self.isPlayerPresented {
                 self.play(stream: stream, at: indexPath)
             } else {
@@ -110,17 +126,35 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
                 }
             }
         case let .streamChanged(stream, indexPath):
-            // первый готовый к воспроизведению поток запускается автоматически
+            // готовый к воспроизведению поток запускается автоматически,
+            // пока плеер не показан или текущий поток завершился ошибкой
             guard case .readyToPlay = stream.status else { return }
-            if self.isPlayerPresented { return }
+            if self.isPlayerPresented, !self.isCurrentStreamFailed { return }
+            self.autoplay(stream: stream, at: indexPath)
+        }
+    }
+    /**
+     Запускает автозапуск потока.
+
+     Поток запускается в плеере и разрешается контроллеру плейлиста
+     событием для выделения строки.
+
+     - Parameter stream: Поток вещания.
+     - Parameter indexPath: Путь строки потока.
+     */
+    private func autoplay(stream: Stream, at indexPath: IndexPath) {
+        self.isAutoplayedStream = true
+        if self.isPlayerPresented {
+            self.play(stream: stream, at: indexPath)
+        } else {
             self.updatePlayerState(isPlayerPresented: true) {
                 self.play(stream: stream, at: indexPath)
             }
-            // автозапущенный поток разрешён: контроллеру плейлиста
-            // передаётся дополнительное событие разрешения
-            let event = PlaylistEvent.resolvedStream(stream, indexPath: indexPath)
-            self.playlistViewController?.handle(event)
         }
+        // автозапущенный поток разрешён: контроллеру плейлиста
+        // передаётся дополнительное событие разрешения
+        let event = PlaylistEvent.resolvedStream(stream, indexPath: indexPath)
+        self.playlistViewController?.handle(event)
     }
     /**
      Запускает воспроизведение потока.
@@ -134,8 +168,30 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
     private func play(stream: Stream, at indexPath: IndexPath) {
         print("Playing stream: \(stream)")
         self.currentStreamIndexPath = indexPath
+        self.isCurrentStreamFailed = false
         self.playerViewController.player?.replaceCurrentItem(with: stream.url)
         self.playerViewController.player?.play()
+    }
+    /**
+     Возвращает ближайший готовый к воспроизведению поток после указанного
+     пути строки среди переданных путей строк.
+
+     - Parameter indexPath: Путь строки сбойного потока в плейлисте.
+     - Parameter candidates: Пути строк потоков-кандидатов в плейлисте.
+     - Returns: Поток вещания с путём строки в плейлисте; `nil`, если готовых
+       к воспроизведению потоков среди кандидатов после указанного нет.
+     */
+    private func nextReadyStream(
+        after indexPath: IndexPath,
+        among candidates: [IndexPath]
+    ) -> (stream: Stream, indexPath: IndexPath)? {
+        for candidate in candidates.sorted() where candidate > indexPath {
+            let stream = self.playlistService.stream(at: candidate)
+            if case .readyToPlay = stream.status {
+                return (stream, candidate)
+            }
+        }
+        return nil
     }
 
 
@@ -164,13 +220,25 @@ extension PlayerContainerViewController: PlayerViewController.PlaybackErrorDeleg
      Обработка переносится на главный поток: наблюдение за плеером может
      сообщить об ошибке из любого потока.
 
+     Автозапущенный поток помечается ошибкой и заменяется ближайшим готовым
+     к воспроизведению следующим за ним. Для потока, запущенного выбором
+     пользователя, сообщается только ошибка.
+
      - Parameter error: Ошибка воспроизведения. `nil`, если система
        не сообщила причину.
      */
     private func handlePlaybackError(_ error: (any Error)?) {
         DispatchQueue.main.async { [weak self] in
             guard let self, let indexPath = self.currentStreamIndexPath else { return }
+            self.isCurrentStreamFailed = true
             self.playlistService.streamPlaybackFailed(error, at: indexPath)
+            // автозапущенный поток заменяется ближайшим готовым среди видимых
+            // строк; если готовых нет, замена найдётся при прокрутке списка
+            guard self.isAutoplayedStream else { return }
+            let visibleIndexPaths = self.playlistViewController?.visiblePlaylistIndexPaths ?? []
+            guard let next = self.nextReadyStream(after: indexPath, among: visibleIndexPaths)
+            else { return }
+            self.autoplay(stream: next.stream, at: next.indexPath)
         }
     }
 
