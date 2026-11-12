@@ -11,9 +11,11 @@ import UIKit
 /**
  Контроллер плейлиста.
 
- Отображает потоки вещания в таблице. Сервис плейлиста инжектируется
- владельцем — контейнером плеера, который запускает его и передаёт события
- для отрисовки.
+ Отображает потоки вещания в таблице с источником данных на снимках
+ состояния: изменения структуры плейлиста — скрытие нерабочих потоков,
+ появление и исчезновение групп — анимируются автоматически.
+ Сервис плейлиста инжектируется владельцем — контейнером плеера, который
+ запускает его и передаёт события для отрисовки.
  */
 class PlaylistViewController: UITableViewController {
     /**
@@ -21,7 +23,7 @@ class PlaylistViewController: UITableViewController {
      */
     private let playlistService: PlaylistService
     /**
-     Путь последней успешно разрешённой строки.
+     Путь строки последней успешно разрешённой строки в плейлисте.
      */
     private var lastResolvedIndexPath: IndexPath?
     /**
@@ -30,6 +32,25 @@ class PlaylistViewController: UITableViewController {
      Загружает логотипы каналов для ячеек таблицы.
      */
     private let imageService = ImageService()
+    /**
+     Источник данных таблицы на снимках состояния.
+
+     Секции — индексы групп плейлиста, элементы — пути строк потоков
+     в плейлисте.
+     */
+    private lazy var dataSource = UITableViewDiffableDataSource<Int, IndexPath>(
+        tableView: self.tableView
+    ) { [weak self] tableView, indexPath, playlistIndexPath in
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: StreamCell.reuseIdentifier,
+            for: indexPath
+        )
+        if let streamCell = cell as? StreamCell {
+            self?.configure(streamCell, at: playlistIndexPath)
+        }
+
+        return cell
+    }
 
     /**
      Создаёт контроллер плейлиста.
@@ -51,6 +72,8 @@ class PlaylistViewController: UITableViewController {
 
         // убирает системный отступ над заголовками секций
         self.tableView.sectionHeaderTopPadding = 0
+        self.tableView.register(StreamCell.self, forCellReuseIdentifier: StreamCell.reuseIdentifier)
+        self.dataSource.defaultRowAnimation = .fade
     }
 
     /**
@@ -62,52 +85,85 @@ class PlaylistViewController: UITableViewController {
      */
     func handle(_ event: PlaylistEvent) {
         switch event {
-        case .loaded:
-            self.tableView.reloadData()
+        case .loaded, .playlistChanged:
+            self.applySnapshot()
         case let .loadingFailed(error):
             self.showAlert(title: "Ошибка загрузки", message: error.localizedDescription)
-        case let .streamChanged(stream, indexPath):
-            self.refreshCell(at: indexPath, with: stream)
+        case let .streamChanged(_, indexPath):
+            self.refreshVisibleCell(at: indexPath)
         case let .resolvedStream(stream, indexPath):
-            self.refreshCell(at: indexPath, with: stream)
+            self.refreshVisibleCell(at: indexPath)
             switch stream.status {
             case .readyToPlay:
                 // выделение и запоминание последней успешной строки — одно действие
-                self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                if let displayIndexPath = self.dataSource.indexPath(for: indexPath) {
+                    self.tableView.selectRow(at: displayIndexPath, animated: true, scrollPosition: .none)
+                }
                 self.lastResolvedIndexPath = indexPath
             case .failed(let error):
                 self.showErrorAlert(for: stream, error: error)
                 // попытка переключения не удалась: выделение возвращается
                 // на последнюю успешно разрешённую строку
-                self.tableView.deselectRow(at: indexPath, animated: true)
-                guard let indexPath = self.lastResolvedIndexPath else { return }
-                self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                if let displayIndexPath = self.dataSource.indexPath(for: indexPath) {
+                    self.tableView.deselectRow(at: displayIndexPath, animated: true)
+                }
+                guard let lastResolvedIndexPath else { return }
+                let displayIndexPath = self.dataSource.indexPath(for: lastResolvedIndexPath)
+                guard let displayIndexPath else { return }
+                
+                self.tableView.selectRow(at: displayIndexPath, animated: true, scrollPosition: .none)
             case .unknown, .processing:
                 break
             }
         }
     }
     /**
-     Обновляет содержимое ячейки актуальными данными потока.
-     - Parameter indexPath: Путь строки.
-     - Parameter stream: Поток вещания.
+     Применяет к таблице снимок состояния из отображаемых групп плейлиста.
      */
-    private func refreshCell(at indexPath: IndexPath, with stream: Stream) {
-        // невидимая ячейка получит актуальные данные в cellForRowAt при прокрутке
-        guard let cell = self.tableView.cellForRow(at: indexPath) as? StreamCell else { return }
+    private func applySnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, IndexPath>()
+        for groupSnapshot in self.playlistService.groupSnapshots {
+            let section = groupSnapshot.playlistSection
+            snapshot.appendSections([section])
+            snapshot.appendItems(
+                groupSnapshot.playlistRows.map { IndexPath(row: $0, section: section) }
+            )
+        }
+        self.dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    /**
+     Обновляет видимую ячейку потока актуальными данными.
+
+     Ячейка обновляется на месте, без пересоздания: пересоздание через
+     `reloadItems` вызывало бы `didEndDisplaying` и отмену собственной
+     проверки потока. Невидимая ячейка получит актуальные данные
+     в поставщике ячеек при прокрутке.
+
+     - Parameter indexPath: Путь строки потока в плейлисте.
+     */
+    private func refreshVisibleCell(at indexPath: IndexPath) {
+        let displayIndexPath = self.dataSource.indexPath(for: indexPath)
+        guard let displayIndexPath else { return }
+        let cell = self.tableView.cellForRow(at: displayIndexPath) as? StreamCell
+        guard let cell else { return }
+        
+        let stream = self.playlistService.stream(at: indexPath)
+        cell.configure(with: stream)
+        self.loadLogo(for: stream, at: indexPath, in: cell)
+    }
+    /**
+     Настраивает ячейку потока актуальными данными.
+
+     - Parameter cell: Ячейка строки.
+     - Parameter indexPath: Путь строки потока в плейлисте.
+     */
+    private func configure(_ cell: StreamCell, at indexPath: IndexPath) {
+        let stream = self.playlistService.stream(at: indexPath)
         cell.configure(with: stream)
         self.loadLogo(for: stream, at: indexPath, in: cell)
     }
 
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        self.playlistService.groups.count
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.playlistService.groups[section].streams.count
-    }
+    // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header: GroupHeaderView
@@ -117,27 +173,9 @@ class PlaylistViewController: UITableViewController {
         } else {
             header = GroupHeaderView()
         }
-        header.configure(with: self.playlistService.groups[section])
+        header.configure(with: self.playlistService.filteredGroups[section])
 
         return header
-    }
-
-    override func tableView(
-        _ tableView: UITableView,
-        cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
-        let stream = self.playlistService.stream(at: indexPath)
-        let cell: StreamCell
-        let reuseCell = tableView.dequeueReusableCell(withIdentifier: StreamCell.reuseIdentifier)
-        if let streamCell = reuseCell as? StreamCell {
-            cell = streamCell
-        } else {
-            cell = StreamCell(style: .default, reuseIdentifier: StreamCell.reuseIdentifier)
-        }
-        cell.configure(with: stream)
-        self.loadLogo(for: stream, at: indexPath, in: cell)
-
-        return cell
     }
 
     override func tableView(
@@ -145,7 +183,8 @@ class PlaylistViewController: UITableViewController {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        self.playlistService.requestValidation(at: indexPath)
+        guard let storeIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { return }
+        self.playlistService.requestValidation(at: storeIndexPath)
     }
 
     override func tableView(
@@ -153,14 +192,16 @@ class PlaylistViewController: UITableViewController {
         didEndDisplaying cell: UITableViewCell,
         forRowAt indexPath: IndexPath
     ) {
-        self.playlistService.cancelValidation(at: indexPath)
-        if let logoURLString = self.playlistService.stream(at: indexPath).attributes["tvg-logo"] {
+        guard let storeIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { return }
+        self.playlistService.cancelValidation(at: storeIndexPath)
+        if let logoURLString = self.playlistService.stream(at: storeIndexPath).attributes["tvg-logo"] {
             self.imageService.cancelLoading(from: logoURLString)
         }
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.playlistService.resolveStreamStatus(at: indexPath)
+        guard let storeIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { return }
+        self.playlistService.resolveStreamStatus(at: storeIndexPath)
     }
     /**
      Показывает пользователю предупреждение.
@@ -198,7 +239,7 @@ class PlaylistViewController: UITableViewController {
      логотипа не влияет на отображение строки.
 
      - Parameter stream: Поток вещания.
-     - Parameter indexPath: Индекс строки.
+     - Parameter indexPath: Путь строки потока в плейлисте.
      - Parameter cell: Ячейка строки.
      */
     private func loadLogo(for stream: Stream, at indexPath: IndexPath, in cell: StreamCell) {
@@ -209,11 +250,14 @@ class PlaylistViewController: UITableViewController {
         self.imageService.loadImage(from: logoURLString) { [weak self] result in
             guard case .success(let image) = result else { return }
             // строка могла быть переиспользована под другой поток
-            guard self?.playlistService.stream(at: indexPath).attributes["tvg-logo"] == logoURLString,
-                  self?.tableView.cellForRow(at: indexPath) === cell else { return }
+            guard let displayIndexPath = self?.tableView.indexPath(for: cell) else { return }
+            guard self?.dataSource.itemIdentifier(for: displayIndexPath) == indexPath,
+                  self?.tableView.cellForRow(at: displayIndexPath) === cell else { return }
             cell.setLogo(image)
         }
     }
 
 
 }
+
+
