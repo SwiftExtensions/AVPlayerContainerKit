@@ -89,8 +89,13 @@ class PlaylistViewController: UITableViewController {
             self.applySnapshot()
         case let .loadingFailed(error):
             self.showAlert(title: "Ошибка загрузки", message: error.localizedDescription)
-        case let .streamChanged(_, indexPath):
+        case let .streamChanged(stream, indexPath):
             self.refreshVisibleCell(at: indexPath)
+            // отмена проверки делает поток непроверенным: если его строка
+            // всё ещё видима, запрос проверки возобновляется
+            if case .unknown = stream.status {
+                self.requestValidationIfVisible(at: indexPath)
+            }
         case let .resolvedStream(stream, indexPath):
             self.refreshVisibleCell(at: indexPath)
             switch stream.status {
@@ -130,6 +135,12 @@ class PlaylistViewController: UITableViewController {
             )
         }
         self.dataSource.apply(snapshot, animatingDifferences: true)
+        // строки, вошедшие в экран из-за изменения структуры, могли не получить
+        // запросов на проверку — возобновляем их для всех видимых строк
+        for indexPath in self.tableView.indexPathsForVisibleRows ?? [] {
+            guard let playlistIndexPath = self.dataSource.itemIdentifier(for: indexPath) else { continue }
+            self.playlistService.requestValidation(at: playlistIndexPath)
+        }
     }
     /**
      Обновляет видимую ячейку потока актуальными данными.
@@ -144,12 +155,27 @@ class PlaylistViewController: UITableViewController {
     private func refreshVisibleCell(at indexPath: IndexPath) {
         let displayIndexPath = self.dataSource.indexPath(for: indexPath)
         guard let displayIndexPath else { return }
+        
         let cell = self.tableView.cellForRow(at: displayIndexPath) as? StreamCell
         guard let cell else { return }
-        
+
         let stream = self.playlistService.stream(at: indexPath)
         cell.configure(with: stream)
         self.loadLogo(for: stream, at: indexPath, in: cell)
+    }
+    /**
+     Запрашивает проверку потока, если его строка видима в таблице.
+
+     - Parameter indexPath: Путь строки потока в плейлисте.
+     */
+    private func requestValidationIfVisible(at indexPath: IndexPath) {
+        let displayIndexPath = self.dataSource.indexPath(for: indexPath)
+        guard let displayIndexPath else { return }
+        
+        let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows ?? []
+        guard indexPathsForVisibleRows.contains(displayIndexPath) else { return }
+        
+        self.playlistService.requestValidation(at: indexPath)
     }
     /**
      Настраивает ячейку потока актуальными данными.
