@@ -16,7 +16,7 @@ struct PlaylistFilter {
     /**
      Настройки отображения плейлиста.
      */
-    private let settings: Settings
+    private var settings: Settings
 
     /**
      Нерабочие потоки (с ошибкой) скрыты из отображения плейлиста.
