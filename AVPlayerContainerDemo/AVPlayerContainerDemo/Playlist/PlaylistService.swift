@@ -8,6 +8,30 @@
 import Foundation
 
 /**
+ Ошибка воспроизведения без системной причины.
+ */
+enum PlaybackError: Error {
+    /**
+     Причина ошибки неизвестна.
+     */
+    case unknown
+
+
+}
+
+extension PlaybackError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .unknown: "Неизвестная ошибка воспроизведения."
+        }
+
+
+    }
+
+
+}
+
+/**
  События плейлиста для отображения.
  */
 enum PlaylistEvent {
@@ -110,6 +134,23 @@ final class PlaylistService {
      */
     func cancelValidation(at indexPath: IndexPath) {
         self.playlist.cancelValidation(at: indexPath)
+    }
+    /**
+     Сообщает об ошибке воспроизведения потока.
+
+     Поток помечается состоянием `.failed`, и его изменение сообщается
+     событием. Если поток был запрошен пользователем, он разрешается
+     событием `resolvedStream` — контроллер плейлиста покажет предупреждение
+     об ошибке и вернёт выделение на последнюю успешную строку.
+
+     - Parameter error: Ошибка воспроизведения. `nil`, если система
+       не сообщила причину.
+     - Parameter indexPath: Путь строки потока.
+     */
+    func streamPlaybackFailed(_ error: (any Error)?, at indexPath: IndexPath) {
+        let failure = error ?? PlaybackError.unknown
+        self.playlist.setStatus(.failed(failure), at: indexPath)
+        self.handleStatusChange(at: indexPath)
     }
     /**
      Разрешает статус потока по пути строки.
