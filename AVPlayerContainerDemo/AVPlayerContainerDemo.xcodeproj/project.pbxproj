@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,6 +27,13 @@
 		FF420386308C1A4000C25C71 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF420385308C1A4000C25C71 /* Group.swift */; };
 		FF420388308C1C9000C25C71 /* GroupHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF420387308C1C9000C25C71 /* GroupHeaderView.swift */; };
 		FF4203B0308B7BCD00C25C71 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */; };
+		FF4203B3308C2A0000C25C71 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */; };
+		FF4203B5308C2B0000C25C71 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B4308C2B0000C25C71 /* Settings.swift */; };
+		FF4203B7308C2C0000C25C71 /* PlaylistEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B6308C2C0000C25C71 /* PlaylistEvent.swift */; };
+		FF4203B9308C2D0000C25C71 /* UnknownPlaybackError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B8308C2D0000C25C71 /* UnknownPlaybackError.swift */; };
+		FF4203BB308C2E0000C25C71 /* EventChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203BA308C2E0000C25C71 /* EventChannel.swift */; };
+		FF4203BD308C2F0000C25C71 /* PlaylistFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */; };
+		FF4203C1308C310000C25C71 /* GroupSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C0308C310000C25C71 /* GroupSnapshot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +58,13 @@
 		FF420385308C1A4000C25C71 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		FF420387308C1C9000C25C71 /* GroupHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupHeaderView.swift; sourceTree = "<group>"; };
 		FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		FF4203B4308C2B0000C25C71 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		FF4203B6308C2C0000C25C71 /* PlaylistEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistEvent.swift; sourceTree = "<group>"; };
+		FF4203B8308C2D0000C25C71 /* UnknownPlaybackError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownPlaybackError.swift; sourceTree = "<group>"; };
+		FF4203BA308C2E0000C25C71 /* EventChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventChannel.swift; sourceTree = "<group>"; };
+		FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistFilter.swift; sourceTree = "<group>"; };
+		FF4203C0308C310000C25C71 /* GroupSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSnapshot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +105,7 @@
 				4E92BE0428A68047008D437F /* AppDelegate.swift */,
 				4E92BE1828A68077008D437F /* PlayerContainerViewController.swift */,
 				FF0774173073BCA3001D6D76 /* PlaylistViewController.swift */,
+				FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */,
 				4E92BE0628A68047008D437F /* SceneDelegate.swift */,
 				FF07742330889401001D6D76 /* StreamCell.swift */,
 				FF420387308C1C9000C25C71 /* GroupHeaderView.swift */,
@@ -112,12 +127,18 @@
 		FF4203AD308B512E00C25C71 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
+				FF4203BA308C2E0000C25C71 /* EventChannel.swift */,
 				FF42037F308C0A1000C25C71 /* ExtInf.swift */,
 				FF420381308C0C7000C25C71 /* ExtInfParser.swift */,
 				FF420385308C1A4000C25C71 /* Group.swift */,
+				FF4203C0308C310000C25C71 /* GroupSnapshot.swift */,
 				FF42037D3088939900C25C71 /* Playlist.swift */,
+				FF4203B6308C2C0000C25C71 /* PlaylistEvent.swift */,
+				FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */,
 				FF07741D3073D359001D6D76 /* PlaylistLoader.swift */,
 				FF07742930889404001D6D76 /* PlaylistService.swift */,
+				FF4203B4308C2B0000C25C71 /* Settings.swift */,
+				FF4203B8308C2D0000C25C71 /* UnknownPlaybackError.swift */,
 			);
 			path = Playlist;
 			sourceTree = "<group>";
@@ -188,7 +209,7 @@
 			);
 			mainGroup = 4E92BDF828A68047008D437F;
 			packageReferences = (
-				4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference "AVPlayerContainerKit" */,
+				4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = 4E92BE0228A68047008D437F /* Products */;
 			projectDirPath = "";
@@ -225,6 +246,13 @@
 				FF42037E3088939900C25C71 /* Playlist.swift in Sources */,
 				FF420380308C0A1000C25C71 /* ExtInf.swift in Sources */,
 				FF420382308C0C7000C25C71 /* ExtInfParser.swift in Sources */,
+				FF4203B3308C2A0000C25C71 /* SettingsViewController.swift in Sources */,
+				FF4203B5308C2B0000C25C71 /* Settings.swift in Sources */,
+				FF4203B7308C2C0000C25C71 /* PlaylistEvent.swift in Sources */,
+				FF4203B9308C2D0000C25C71 /* UnknownPlaybackError.swift in Sources */,
+				FF4203BB308C2E0000C25C71 /* EventChannel.swift in Sources */,
+				FF4203BD308C2F0000C25C71 /* PlaylistFilter.swift in Sources */,
+				FF4203C1308C310000C25C71 /* GroupSnapshot.swift in Sources */,
 				FF420386308C1A4000C25C71 /* Group.swift in Sources */,
 				FF420388308C1C9000C25C71 /* GroupHeaderView.swift in Sources */,
 				FF420384308C0E3000C25C71 /* ImageService.swift in Sources */,
@@ -454,7 +482,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference "AVPlayerContainerKit" */ = {
+		4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ..;
 		};
@@ -463,7 +491,7 @@
 /* Begin XCSwiftPackageProductDependency section */
 		4E92BE2128A6828F008D437F /* AVPlayerContainerKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference "AVPlayerContainerKit" */;
+			package = 4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference ".." */;
 			productName = AVPlayerContainerKit;
 		};
 /* End XCSwiftPackageProductDependency section */
