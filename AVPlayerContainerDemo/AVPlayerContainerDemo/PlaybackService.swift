@@ -180,6 +180,31 @@ final class PlaybackService {
     }
 
     /**
+     Выбирает следующий по списку поток после играющего.
+
+     Выбор повторяет выбор строки пользователем: поток разрешается
+     сервисом плейлиста, при необходимости проверяется вне очереди.
+
+     - Returns: `true`, если следующий поток есть и выбран.
+     */
+    @discardableResult
+    func selectNextStream() -> Bool {
+        self.selectAdjacentStream(offset: 1)
+    }
+    /**
+     Выбирает предыдущий по списку поток перед играющим.
+
+     Выбор повторяет выбор строки пользователем: поток разрешается
+     сервисом плейлиста, при необходимости проверяется вне очереди.
+
+     - Returns: `true`, если предыдущий поток есть и выбран.
+     */
+    @discardableResult
+    func selectPreviousStream() -> Bool {
+        self.selectAdjacentStream(offset: -1)
+    }
+
+    /**
      Запускает автозапуск потока.
 
      Поток запускается в плеере и разрешается контроллеру плейлиста
@@ -234,6 +259,40 @@ final class PlaybackService {
             }
         }
         return nil
+    }
+    /**
+     Выбирает соседний отображаемый поток относительно играющего.
+
+     - Parameter offset: Смещение относительно играющего потока: `1` —
+       следующий, `-1` — предыдущий.
+     - Returns: `true`, если соседний поток есть и выбран.
+     */
+    private func selectAdjacentStream(offset: Int) -> Bool {
+        guard case let .playing(indexPath, _) = self.status else { return false }
+        let displayIndexPaths = self.displayIndexPaths()
+        guard let position = displayIndexPaths.firstIndex(of: indexPath) else {
+            return false
+        }
+        let adjacentPosition = position + offset
+        guard displayIndexPaths.indices.contains(adjacentPosition) else {
+            return false
+        }
+
+        self.playlistService.resolveStreamStatus(at: displayIndexPaths[adjacentPosition])
+        return true
+    }
+    /**
+     Возвращает пути строк отображаемых потоков в порядке показа.
+
+     Пути считаются по снимкам групп: исключённые настройкой скрытия
+     потоки не участвуют в переключении.
+     */
+    private func displayIndexPaths() -> [IndexPath] {
+        self.playlistService.groupSnapshots.flatMap { snapshot in
+            snapshot.playlistRows.map {
+                IndexPath(row: $0, section: snapshot.playlistSection)
+            }
+        }
     }
 
 

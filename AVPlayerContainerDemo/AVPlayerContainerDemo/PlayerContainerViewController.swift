@@ -49,6 +49,20 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
             self?.playlistViewController?.handle(event)
         }
     )
+    /**
+     Сервис дистанционного управления воспроизведением.
+     */
+    private lazy var remoteControlService = RemoteControlService(
+        player: { [weak self] in
+            self?.playerViewController.player
+        },
+        selectNext: { [weak self] in
+            self?.playbackService.selectNextStream() ?? false
+        },
+        selectPrevious: { [weak self] in
+            self?.playbackService.selectPreviousStream() ?? false
+        }
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -193,6 +207,7 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
         self.playerViewController.player?.replaceCurrentItem(with: stream.url)
         self.playerViewController.player?.play()
         self.showChannelOverlay(for: stream)
+        self.remoteControlService.streamDidStart(stream)
     }
     /**
      Добавляет оверлей переключения канала по центру вью плеера.
