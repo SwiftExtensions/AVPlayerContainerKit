@@ -46,7 +46,7 @@ final class PlaylistService {
     /**
      Последовательность событий плейлиста.
      */
-    var events: AsyncStream<PlaylistEvent> {
+    var events: AsyncStream<PlaylistServiceEvent> {
         self.eventChannel.stream()
     }
 
@@ -61,7 +61,7 @@ final class PlaylistService {
     /**
      Канал событий плейлиста.
      */
-    private let eventChannel = EventChannel<PlaylistEvent>()
+    private let eventChannel = EventChannel<PlaylistServiceEvent>()
 
     /**
      Путь строки потока с приоритетной проверкой.
@@ -84,7 +84,6 @@ final class PlaylistService {
     }
     /**
      Возвращает поток по пути строки.
-
      - Parameter indexPath: Путь строки: секция — группа, строка — поток в ней.
      - Returns: Поток вещания.
      */
@@ -94,7 +93,6 @@ final class PlaylistService {
     /**
      Скрывает или показывает нерабочие потоки и сообщает о перезагрузке
      плейлиста.
-
      - Parameter hidden: Новое значение настройки.
      */
     func setFailedStreamsHidden(_ hidden: Bool) {
@@ -135,9 +133,21 @@ final class PlaylistService {
         // с предупреждением и остаётся до выбора другого канала
         if indexPath == self.filter.exceptedIndexPath {
             let stream = self.playlist.stream(at: indexPath)
-            self.emit(.resolvedStream(stream, indexPath: indexPath))
+            self.emit(.resolved(stream, indexPath: indexPath))
         } else {
             self.handleStatusChange(at: indexPath)
+        }
+    }
+    /**
+     Убирает сбойный поток-исключение с экрана после закрытия предупреждения.
+     - Parameter indexPath: Путь строки потока в плейлисте.
+     */
+    func hideFailedStream(at indexPath: IndexPath) {
+        if self.filter.exceptedIndexPath == indexPath {
+            self.filter.exceptedIndexPath = nil
+        }
+        if self.filter.isFailedStreamsHidden {
+            self.emit(.playlistChanged)
         }
     }
     /**
@@ -172,7 +182,7 @@ final class PlaylistService {
             // поток будет разрешён событием после проверки
             self.priorityIndexPath = indexPath
         case .readyToPlay:
-            self.emit(.resolvedStream(stream, indexPath: indexPath))
+            self.emit(.resolved(stream, indexPath: indexPath))
         case .processing:
             break
         }
@@ -216,20 +226,33 @@ final class PlaylistService {
             // запрошенный поток разрешается событием после проверки
             if self.priorityIndexPath == indexPath {
                 self.priorityIndexPath = nil
-                self.emit(.resolvedStream(stream, indexPath: indexPath))
+                self.emit(.resolved(stream, indexPath: indexPath))
             } else {
-                self.emit(.streamChanged(stream, indexPath: indexPath))
+                self.emit(.changed(stream, indexPath: indexPath))
             }
         case .unknown, .processing:
-            self.emit(.streamChanged(stream, indexPath: indexPath))
+            self.emit(.changed(stream, indexPath: indexPath))
         }
     }
     /**
-     Выдаёт событие в канал событий плейлиста.
-
+     Выдаёт событие плейлиста в канал событий.
      - Parameter event: Событие плейлиста.
      */
     private func emit(_ event: PlaylistEvent) {
+        self.emit(.playlist(event))
+    }
+    /**
+     Выдаёт событие потока вещания в канал событий.
+     - Parameter event: Событие потока вещания.
+     */
+    private func emit(_ event: StreamEvent) {
+        self.emit(.stream(event))
+    }
+    /**
+     Выдаёт событие в канал событий плейлиста.
+     - Parameter event: Событие сервиса плейлиста.
+     */
+    private func emit(_ event: PlaylistServiceEvent) {
         self.eventChannel.emit(event)
     }
 
