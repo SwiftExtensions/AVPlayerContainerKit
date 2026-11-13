@@ -117,10 +117,7 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
         self.playlistViewController?.handle(event)
         switch event {
         case .loaded, .loadingFailed, .playlistChanged:
-            let count = self.playlistService.groups.reduce(0) { $0 + $1.streams.count }
-            self.title = count > 0
-            ? "Player Container Demo (\(count))"
-            : "Player Container Demo"
+            self.updateTitle()
         case let .resolvedStream(stream, indexPath):
             guard case .readyToPlay = stream.status else { return }
             // поток запущен выбором пользователя: автозапуск завершён
@@ -139,6 +136,29 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
             if self.isPlayerPresented, !self.isCurrentStreamFailed { return }
             self.autoplay(stream: stream, at: indexPath)
         }
+    }
+    /**
+     Обновляет заголовок с количеством доступных потоков.
+
+     Считаются видимые (отфильтрованные) группы. Изменение выполняется
+     плавным переходом.
+     */
+    private func updateTitle() {
+        let count = self.playlistService.filteredGroups.reduce(0) { $0 + $1.streams.count }
+        let title = count > 0 ? "Player Container Demo (\(count))" : "Player Container Demo"
+        guard self.title != title else { return }
+        let navigationBar = self.navigationController?.navigationBar
+        guard let navigationBar else {
+            self.title = title
+            return
+        }
+        
+        UIView.transition(
+            with: navigationBar,
+            duration: 0.25,
+            options: [.transitionCrossDissolve, .beginFromCurrentState],
+            animations: { self.title = title }
+        )
     }
     /**
      Запускает автозапуск потока.
