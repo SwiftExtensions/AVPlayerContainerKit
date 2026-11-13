@@ -88,6 +88,10 @@ class PlaylistViewController: UITableViewController {
         // выделение играющего потока сохраняется при возврате с других экранов
         self.clearsSelectionOnViewWillAppear = false
         self.tableView.register(StreamCell.self, forCellReuseIdentifier: StreamCell.reuseIdentifier)
+        self.tableView.register(
+            GroupHeaderView.self,
+            forHeaderFooterViewReuseIdentifier: GroupHeaderView.reuseIdentifier
+        )
         self.dataSource.defaultRowAnimation = .fade
     }
 
@@ -150,10 +154,25 @@ class PlaylistViewController: UITableViewController {
             )
         }
         self.dataSource.apply(snapshot, animatingDifferences: true)
+        self.refreshVisibleHeaders()
         // строки, вошедшие в экран из-за изменения структуры, могли не получить
         // запросов на проверку — возобновляем их для всех видимых строк
         for playlistIndexPath in self.dataSource.normalized(self.indexPathsForVisibleRows) {
             self.playlistService.requestValidation(at: playlistIndexPath)
+        }
+    }
+    /**
+     Обновляет заголовки видимых секций актуальными группами.
+
+     Вызывается после изменения структуры таблицы: количество потоков
+     в заголовках групп могло измениться.
+     */
+    private func refreshVisibleHeaders() {
+        let sections = Set(self.indexPathsForVisibleRows.map { $0.section })
+        for displaySection in sections {
+            guard let header = self.tableView.headerView(forSection: displaySection) as? GroupHeaderView
+            else { continue }
+            header.configure(with: self.playlistService.filteredGroups[displaySection])
         }
     }
     /**
@@ -206,16 +225,13 @@ class PlaylistViewController: UITableViewController {
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header: GroupHeaderView
-        let reuseHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: GroupHeaderView.reuseIdentifier)
-        if let groupHeaderView = reuseHeader as? GroupHeaderView {
-            header = groupHeaderView
-        } else {
-            header = GroupHeaderView()
-        }
-        header.configure(with: self.playlistService.filteredGroups[section])
+        let header = tableView.dequeueReusableHeaderFooterView(
+            withIdentifier: GroupHeaderView.reuseIdentifier
+        )
+        guard let groupHeaderView = header as? GroupHeaderView else { return nil }
+        groupHeaderView.configure(with: self.playlistService.filteredGroups[section])
 
-        return header
+        return groupHeaderView
     }
 
     override func tableView(
