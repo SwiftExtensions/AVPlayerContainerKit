@@ -23,6 +23,14 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
      */
     private let playlistService = PlaylistService()
     /**
+     Сервис изображений для загрузки логотипов каналов.
+     */
+    private let imageService = ImageService()
+    /**
+     Оверлей переключения канала поверх плеера.
+     */
+    private let channelOverlayView = ChannelOverlayView()
+    /**
      Контроллер плейлиста.
      */
     private weak var playlistViewController: PlaylistViewController?
@@ -58,6 +66,7 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
         )
         self.playerViewController.playerView.player = AVPlayer()
         self.playerViewController.playbackErrorDelegate = self
+        self.setupChannelOverlayView()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "gearshape"),
             style: .plain,
@@ -177,13 +186,46 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
     }
     /**
      Запускает воспроизведение потока в плеере.
-
      - Parameter stream: Поток вещания.
      - Parameter indexPath: Путь строки потока в плейлисте.
      */
     private func performPlayback(stream: Stream, at indexPath: IndexPath) {
         self.playerViewController.player?.replaceCurrentItem(with: stream.url)
         self.playerViewController.player?.play()
+        self.showChannelOverlay(for: stream)
+    }
+    /**
+     Добавляет оверлей переключения канала по центру вью плеера.
+     */
+    private func setupChannelOverlayView() {
+        let overlayView = self.channelOverlayView
+        overlayView.translatesAutoresizingMaskIntoConstraints = false
+        let playerView = self.playerViewController.view!
+        playerView.addSubview(overlayView)
+        NSLayoutConstraint.activate([
+            overlayView.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
+            overlayView.centerYAnchor.constraint(equalTo: playerView.centerYAnchor),
+            overlayView.widthAnchor.constraint(
+                lessThanOrEqualTo: playerView.widthAnchor,
+                multiplier: 0.8
+            )
+        ])
+    }
+    /**
+     Показывает оверлей переключения канала.
+
+     Название отображается сразу. Логотип загружается по адресу
+     из атрибута `tvg-logo` и добавляется, когда придёт из сети.
+
+     - Parameter stream: Поток вещания, переключённый на воспроизведение.
+     */
+    private func showChannelOverlay(for stream: Stream) {
+        self.channelOverlayView.show(stream: stream)
+        guard let logoURLString = stream.attributes["tvg-logo"] else { return }
+        self.imageService.loadImage(from: logoURLString) { [weak self] result in
+            guard case .success(let image) = result else { return }
+            self?.channelOverlayView.setLogo(image, for: stream.url)
+        }
     }
 
 
