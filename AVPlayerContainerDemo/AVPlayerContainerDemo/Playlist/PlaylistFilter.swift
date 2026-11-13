@@ -47,16 +47,30 @@ final class PlaylistFilter {
     }
 
     /**
-     Сообщает, скрыт ли поток из отображения.
+     Сообщает, скрыт ли поток из отображения по пути строки.
 
      Скрыт поток с ошибкой при включённой настройке «скрывать нерабочие
-     потоки». Поток-исключение проверяется вызывающей стороной до этого
-     метода.
+     потоки», кроме потока-исключения.
+
+     - Parameter stream: Поток вещания.
+     - Parameter indexPath: Путь строки потока в плейлисте.
+     - Returns: `true`, если поток скрыт из отображения.
+     */
+    func isHidden(_ stream: Stream, at indexPath: IndexPath) -> Bool {
+        guard indexPath != self.exceptedIndexPath else { return false }
+        return self.isHidden(stream)
+    }
+    /**
+     Сообщает, скрыт ли поток по правилу фильтра.
+
+     Скрыт поток с ошибкой при включённой настройке «скрывать нерабочие
+     потоки». Поток-исключение не учитывается: правило проверяется только
+     вместе с исключением методом `isHidden(_:at:)`.
 
      - Parameter stream: Поток вещания.
      - Returns: `true`, если поток скрыт из отображения.
      */
-    func isHidden(_ stream: Stream) -> Bool {
+    private func isHidden(_ stream: Stream) -> Bool {
         guard self.isFailedStreamsHidden else { return false }
         if case .failed = stream.status { return true }
         return false
@@ -73,12 +87,7 @@ final class PlaylistFilter {
      */
     func groupSnapshots(for groups: [Group]) -> [GroupSnapshot] {
         groups.enumerated().compactMap { section, group in
-            let rows = group.streams.indices.filter { row in
-                let indexPath = IndexPath(row: row, section: section)
-                // поток-исключение остаётся видимым
-                if indexPath == self.exceptedIndexPath { return true }
-                return !self.isHidden(group.streams[row])
-            }
+            let rows = self.visibleRows(of: group, at: section)
             if rows.isEmpty { return nil }
             return GroupSnapshot(playlistSection: section, playlistRows: rows)
         }
@@ -95,14 +104,23 @@ final class PlaylistFilter {
      */
     func filterGroups(for groups: [Group]) -> [Group] {
         groups.enumerated().compactMap { section, group in
-            let streams = group.streams.indices.filter { row in
-                let indexPath = IndexPath(row: row, section: section)
-                // поток-исключение остаётся видимым
-                if indexPath == self.exceptedIndexPath { return true }
-                return !self.isHidden(group.streams[row])
-            }.map { group.streams[$0] }
+            let streams = self.visibleRows(of: group, at: section).map { group.streams[$0] }
             if streams.isEmpty { return nil }
             return Group(title: group.title, streams: streams)
+        }
+    }
+    /**
+     Возвращает индексы видимых строк группы.
+
+     - Parameter group: Группа потоков вещания.
+     - Parameter section: Индекс секции группы в плейлисте.
+     - Returns: Индексы видимых строк группы.
+     */
+    private func visibleRows(of group: Group, at section: Int) -> [Int] {
+        group.streams.indices.filter { row in
+            let stream = group.streams[row]
+            let indexPath = IndexPath(row: row, section: section)
+            return !self.isHidden(stream, at: indexPath)
         }
     }
 

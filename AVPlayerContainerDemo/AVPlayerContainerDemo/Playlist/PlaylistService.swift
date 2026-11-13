@@ -131,7 +131,14 @@ final class PlaylistService {
     func streamPlaybackFailed(_ error: (any Error)?, at indexPath: IndexPath) {
         let failure = error ?? UnknownPlaybackError()
         self.playlist.setStatus(.failed(failure), at: indexPath)
-        self.handleStatusChange(at: indexPath)
+        // поток-исключение не скрывается: он разрешается событием
+        // с предупреждением и остаётся до выбора другого канала
+        if indexPath == self.filter.exceptedIndexPath {
+            let stream = self.playlist.stream(at: indexPath)
+            self.emit(.resolvedStream(stream, indexPath: indexPath))
+        } else {
+            self.handleStatusChange(at: indexPath)
+        }
     }
     /**
      Разрешает статус потока по пути строки.
@@ -143,6 +150,16 @@ final class PlaylistService {
      - Parameter indexPath: Путь строки потока в плейлисте.
      */
     func resolveStreamStatus(at indexPath: IndexPath) {
+        let oldIndexPath = self.filter.exceptedIndexPath
+        // исключение переключается на выбранный пользователем поток
+        self.filter.exceptedIndexPath = indexPath
+        if let oldIndexPath {
+            let oldStream = self.playlist.stream(at: oldIndexPath)
+            // прежний поток-исключение стал скрываемым: он убирается с экрана
+            if self.filter.isHidden(oldStream, at: oldIndexPath) {
+                self.emit(.playlistChanged)
+            }
+        }
         let stream = self.playlist.stream(at: indexPath)
         switch stream.status {
         case .unknown, .failed:
@@ -160,7 +177,6 @@ final class PlaylistService {
             break
         }
     }
-
     /**
      Выполняет работу сервиса: загрузку плейлиста и обработку изменений
      состояния потоков.
@@ -190,10 +206,11 @@ final class PlaylistService {
      */
     private func handleStatusChange(at indexPath: IndexPath) {
         let stream = self.playlist.stream(at: indexPath)
-        if self.filter.isHidden(stream) {
+        if self.filter.isHidden(stream, at: indexPath) {
             self.emit(.playlistChanged)
             return
         }
+        
         switch stream.status {
         case .readyToPlay, .failed:
             // запрошенный поток разрешается событием после проверки
