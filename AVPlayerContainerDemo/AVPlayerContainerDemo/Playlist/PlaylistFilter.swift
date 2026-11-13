@@ -5,18 +5,36 @@
 //  Created by Александр Алгашев on 12.11.2026.
 //
 
+import Foundation
+
 /**
- Отображение плейлиста.
+ Фильтр плейлиста.
 
  Определяет, какие потоки видны в таблице: при включённой настройке
  «скрывать нерабочие потоки» из групп исключаются потоки с ошибкой,
  а опустевшие группы не отображаются.
  */
-struct PlaylistFilter {
+final class PlaylistFilter {
     /**
      Настройки отображения плейлиста.
      */
     private var settings: Settings
+    /**
+     Путь строки потока-исключения.
+
+     Такой поток не скрывается фильтром независимо от настройки: пользователь
+     ожидает его и сам выбирает другой канал.
+     */
+    var exceptedIndexPath: IndexPath?
+
+    /**
+     Создаёт фильтр плейлиста.
+
+     - Parameter settings: Настройки отображения плейлиста.
+     */
+    init(settings: Settings = Settings()) {
+        self.settings = settings
+    }
 
     /**
      Нерабочие потоки (с ошибкой) скрыты из отображения плейлиста.
@@ -29,19 +47,11 @@ struct PlaylistFilter {
     }
 
     /**
-     Создаёт отображение плейлиста.
-
-     - Parameter settings: Настройки отображения плейлиста.
-     */
-    init(settings: Settings = Settings()) {
-        self.settings = settings
-    }
-    
-    /**
      Сообщает, скрыт ли поток из отображения.
 
      Скрыт поток с ошибкой при включённой настройке «скрывать нерабочие
-     потоки».
+     потоки». Поток-исключение проверяется вызывающей стороной до этого
+     метода.
 
      - Parameter stream: Поток вещания.
      - Returns: `true`, если поток скрыт из отображения.
@@ -55,7 +65,8 @@ struct PlaylistFilter {
      Создаёт снимки состояния групп плейлиста для отображения в таблице.
 
      При включённой настройке «скрывать нерабочие потоки» исключаются строки
-     потоков с ошибкой, а опустевшие группы не отображаются.
+     потоков с ошибкой, кроме потока-исключения, а опустевшие группы
+     не отображаются.
 
      - Parameter groups: Группы потоков вещания плейлиста.
      - Returns: Снимки состояния групп плейлиста.
@@ -63,7 +74,10 @@ struct PlaylistFilter {
     func groupSnapshots(for groups: [Group]) -> [GroupSnapshot] {
         groups.enumerated().compactMap { section, group in
             let rows = group.streams.indices.filter { row in
-                !self.isHidden(group.streams[row])
+                let indexPath = IndexPath(row: row, section: section)
+                // поток-исключение остаётся видимым
+                if indexPath == self.exceptedIndexPath { return true }
+                return !self.isHidden(group.streams[row])
             }
             if rows.isEmpty { return nil }
             return GroupSnapshot(playlistSection: section, playlistRows: rows)
@@ -73,14 +87,20 @@ struct PlaylistFilter {
      Фильтрует группы потоков вещания для отображения в таблице.
 
      При включённой настройке «скрывать нерабочие потоки» из групп
-     исключаются потоки с ошибкой, а опустевшие группы не отображаются.
+     исключаются потоки с ошибкой, кроме потока-исключения, а опустевшие
+     группы не отображаются.
 
      - Parameter groups: Группы потоков вещания плейлиста.
      - Returns: Отфильтрованные группы потоков вещания.
      */
     func filterGroups(for groups: [Group]) -> [Group] {
-        groups.compactMap { group in
-            let streams = group.streams.filter { !self.isHidden($0) }
+        groups.enumerated().compactMap { section, group in
+            let streams = group.streams.indices.filter { row in
+                let indexPath = IndexPath(row: row, section: section)
+                // поток-исключение остаётся видимым
+                if indexPath == self.exceptedIndexPath { return true }
+                return !self.isHidden(group.streams[row])
+            }.map { group.streams[$0] }
             if streams.isEmpty { return nil }
             return Group(title: group.title, streams: streams)
         }
