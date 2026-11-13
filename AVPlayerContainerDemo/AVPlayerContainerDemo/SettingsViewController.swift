@@ -58,6 +58,13 @@ final class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
 
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        "Отображение"
+    }
+    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        "Нерабочими считаются потоки, проверка или воспроизведение которых завершилось ошибкой."
+    }
+
     override func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
@@ -68,6 +75,7 @@ final class SettingsViewController: UITableViewController {
         )
         var configuration = cell.defaultContentConfiguration()
         configuration.text = "Скрывать нерабочие потоки"
+        configuration.image = UIImage(systemName: "eye.slash")
         cell.contentConfiguration = configuration
         cell.selectionStyle = .none
         let toggle = UISwitch()
