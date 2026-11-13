@@ -24,6 +24,11 @@ class PlaylistViewController: UITableViewController {
     var visiblePlaylistIndexPaths: [IndexPath] {
         self.dataSource.normalized(self.indexPathsForVisibleRows).sorted()
     }
+    /**
+     Замыкание, вызываемое после закрытия предупреждения о сбойном потоке.
+     - Parameter indexPath: Путь строки сбойного потока в плейлисте.
+     */
+    var onStreamFailureDismissed: ((IndexPath) -> Void)?
     
     /**
      Сервис плейлиста.
@@ -108,14 +113,25 @@ class PlaylistViewController: UITableViewController {
             self.applySnapshot()
         case let .loadingFailed(error):
             self.showAlert(title: "Ошибка загрузки", message: error.localizedDescription)
-        case let .streamChanged(stream, indexPath):
+        }
+    }
+    /**
+     Отрисовывает событие потока вещания.
+
+     Вызывается владельцем — контейнером плеера.
+
+     - Parameter event: Событие потока вещания.
+     */
+    func handle(_ event: StreamEvent) {
+        switch event {
+        case let .changed(stream, indexPath):
             self.refreshVisibleCell(at: indexPath)
             // отмена проверки делает поток непроверенным: если его строка
             // всё ещё видима, запрос проверки возобновляется
             if case .unknown = stream.status {
                 self.requestValidationIfVisible(at: indexPath)
             }
-        case let .resolvedStream(stream, indexPath):
+        case let .resolved(stream, indexPath):
             self.refreshVisibleCell(at: indexPath)
             switch stream.status {
             case .readyToPlay:
@@ -125,7 +141,9 @@ class PlaylistViewController: UITableViewController {
                 }
                 self.lastResolvedIndexPath = indexPath
             case .failed(let error):
-                self.showErrorAlert(for: stream, error: error)
+                self.showErrorAlert(for: stream, error: error) { [weak self] in
+                    self?.onStreamFailureDismissed?(indexPath)
+                }
                 // попытка переключения не удалась: выделение возвращается
                 // на последнюю успешно разрешённую строку
                 if let displayIndexPath = self.dataSource.indexPath(for: indexPath) {
@@ -134,7 +152,7 @@ class PlaylistViewController: UITableViewController {
                 guard let lastResolvedIndexPath else { return }
                 let displayIndexPath = self.dataSource.indexPath(for: lastResolvedIndexPath)
                 guard let displayIndexPath else { return }
-                
+
                 self.tableView.selectRow(at: displayIndexPath, animated: true, scrollPosition: .none)
             case .unknown, .processing:
                 break
@@ -265,13 +283,17 @@ class PlaylistViewController: UITableViewController {
      - Parameter title: Заголовок предупреждения.
      - Parameter message: Текст предупреждения.
      */
-    private func showAlert(title: String, message: String) {
+    private func showAlert(
+        title: String,
+        message: String,
+        completion: (() -> Void)? = nil
+    ) {
         let alert = UIAlertController(
             title: title,
             message: message,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in completion?() })
         self.present(alert, animated: true)
     }
     /**
@@ -279,11 +301,18 @@ class PlaylistViewController: UITableViewController {
 
      - Parameter stream: Поток вещания с ошибкой.
      - Parameter error: Ошибка.
+     - Parameter completion: Замыкание, вызываемое после закрытия
+       предупреждения.
      */
-    private func showErrorAlert(for stream: Stream, error: Error) {
+    private func showErrorAlert(
+        for stream: Stream,
+        error: Error,
+        completion: (() -> Void)? = nil
+    ) {
         self.showAlert(
             title: "Ошибка потока",
-            message: "\(stream.title)\n\n\(error.localizedDescription)"
+            message: "\(stream.title)\n\n\(error.localizedDescription)",
+            completion: completion
         )
     }
     /**
