@@ -23,6 +23,10 @@ final class SettingsViewController: UITableViewController {
      Идентификатор ячейки настройки.
      */
     private static let reuseIdentifier = "SettingCell"
+    /**
+     Индекс раздела настройки времени проверки потока.
+     */
+    private static let validationTimeoutSection = 1
 
     /**
      Создаёт контроллер настроек.
@@ -52,17 +56,26 @@ final class SettingsViewController: UITableViewController {
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Self.reuseIdentifier)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // значение времени проверки могло измениться на экране выбора
+        self.tableView.reloadData()
+    }
+
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int { 1 }
+    override func numberOfSections(in tableView: UITableView) -> Int { 2 }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        "Отображение"
+        section == Self.validationTimeoutSection ? "Проверка" : "Отображение"
     }
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        "Нерабочими считаются потоки, проверка или воспроизведение которых завершилось ошибкой."
+        if section == Self.validationTimeoutSection {
+            return "Максимальное время ожидания проверки одного потока. Применяется к следующим проверкам."
+        }
+        return "Нерабочими считаются потоки, проверка или воспроизведение которых завершилось ошибкой."
     }
 
     override func tableView(
@@ -73,17 +86,36 @@ final class SettingsViewController: UITableViewController {
             withIdentifier: Self.reuseIdentifier,
             for: indexPath
         )
-        var configuration = cell.defaultContentConfiguration()
-        configuration.text = "Скрывать нерабочие потоки"
-        configuration.image = UIImage(systemName: "eye.slash")
-        cell.contentConfiguration = configuration
-        cell.selectionStyle = .none
-        let toggle = UISwitch()
-        toggle.isOn = self.playlistService.isFailedStreamsHidden
-        toggle.addTarget(self, action: #selector(failedStreamsHiddenChanged(_:)), for: .valueChanged)
-        cell.accessoryView = toggle
+        if indexPath.section == Self.validationTimeoutSection {
+            // раскладка «в линию»: название слева, значение справа
+            var configuration = UIListContentConfiguration.valueCell()
+            configuration.text = "Время проверки"
+            configuration.image = UIImage(systemName: "timer")
+            configuration.secondaryText = "\(Int(self.playlistService.validationTimeout)) с"
+            cell.contentConfiguration = configuration
+            cell.accessoryType = .disclosureIndicator
+        } else {
+            var configuration = cell.defaultContentConfiguration()
+            configuration.text = "Скрывать нерабочие потоки"
+            configuration.image = UIImage(systemName: "eye.slash")
+            cell.contentConfiguration = configuration
+            cell.selectionStyle = .none
+            let toggle = UISwitch()
+            toggle.isOn = self.playlistService.isFailedStreamsHidden
+            toggle.addTarget(self, action: #selector(failedStreamsHiddenChanged(_:)), for: .valueChanged)
+            cell.accessoryView = toggle
+        }
 
         return cell
+    }
+
+    // MARK: - Table view delegate
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard indexPath.section == Self.validationTimeoutSection else { return }
+        let controller = ValidationTimeoutViewController(service: self.playlistService)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
     // MARK: - Actions

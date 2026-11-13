@@ -49,11 +49,21 @@ final class PlaylistService {
     var events: AsyncStream<PlaylistServiceEvent> {
         self.eventChannel.stream()
     }
+    /**
+     Максимальное время ожидания проверки одного потока в секундах.
+
+     Настройка сохраняется в настройках плейлиста.
+     */
+    var validationTimeout: TimeInterval { self.settings.validationTimeout }
 
     /**
      Плейлист.
      */
     private let playlist = Playlist()
+    /**
+     Настройки плейлиста.
+     */
+    private var settings = Settings()
     /**
      Отображение плейлиста.
      */
@@ -89,6 +99,17 @@ final class PlaylistService {
      */
     func stream(at indexPath: IndexPath) -> Stream {
         self.playlist.stream(at: indexPath)
+    }
+    /**
+     Задаёт максимальное время ожидания проверки одного потока.
+
+     Новое значение применяется к следующим проверкам без перезапуска
+     сессии проверки.
+
+     - Parameter timeout: Новое время ожидания в секундах.
+     */
+    func setValidationTimeout(_ timeout: TimeInterval) {
+        self.settings.validationTimeout = timeout
     }
     /**
      Скрывает или показывает нерабочие потоки и сообщает о перезагрузке
@@ -197,7 +218,9 @@ final class PlaylistService {
         do {
             try await self.playlist.loadPlaylist(from: url)
             self.emit(.loaded)
-            for try await indexPath in self.playlist.validateRequestedStreams() {
+            for try await indexPath in self.playlist.validateRequestedStreams(
+                timeout: self.settings.validationTimeout
+            ) {
                 self.handleStatusChange(at: indexPath)
             }
         } catch {

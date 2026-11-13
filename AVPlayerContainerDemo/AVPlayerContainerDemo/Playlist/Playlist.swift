@@ -92,17 +92,18 @@ extension Playlist {
      Проверяет потоки по очереди запросов и выдаёт пути строк элементов, у
      которых изменилось состояние.
 
-     Под каждый вызов создаётся новый валидатор ресурсов с указанным временем
-     ожидания проверки.
+     Под каждый вызов создаётся новый валидатор ресурсов. Время ожидания
+     передаётся замыканием и вычисляется при каждой проверке: изменение
+     значения применяется к следующим проверкам без перезапуска сессии.
 
-     - Parameter timeout: Максимальное время ожидания проверки одного потока
-     в секундах.
+     - Parameter timeout: Замыкание максимального времени ожидания проверки
+     одного потока в секундах.
      - Returns: Асинхронная последовательность путей строк изменённых элементов.
      */
     func validateRequestedStreams(
-        timeout: TimeInterval = 5.0
+        timeout: @escaping @autoclosure () -> TimeInterval = 5.0
     ) -> AsyncThrowingStream<IndexPath, any Error> {
-        let validator = AVAssetValidator(items: self.store, timeout: timeout)
+        let validator = AVAssetValidator(items: self.store, timeout: timeout())
         self.assetValidator = validator
         return validator.changes()
     }
