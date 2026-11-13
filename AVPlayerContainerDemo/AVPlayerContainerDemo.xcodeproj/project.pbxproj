@@ -34,6 +34,7 @@
 		FF4203BB308C2E0000C25C71 /* EventChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203BA308C2E0000C25C71 /* EventChannel.swift */; };
 		FF4203BD308C2F0000C25C71 /* PlaylistFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */; };
 		FF4203C1308C310000C25C71 /* GroupSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C0308C310000C25C71 /* GroupSnapshot.swift */; };
+		FF4203C3308C320000C25C71 /* UIColor+Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C2308C320000C25C71 /* UIColor+Palette.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,6 +66,7 @@
 		FF4203BA308C2E0000C25C71 /* EventChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventChannel.swift; sourceTree = "<group>"; };
 		FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistFilter.swift; sourceTree = "<group>"; };
 		FF4203C0308C310000C25C71 /* GroupSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSnapshot.swift; sourceTree = "<group>"; };
+		FF4203C2308C320000C25C71 /* UIColor+Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Palette.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				FF4203AD308B512E00C25C71 /* Playlist */,
 				FF4203AE308B514400C25C71 /* Stream */,
 				4E92BE0428A68047008D437F /* AppDelegate.swift */,
+				FF4203C2308C320000C25C71 /* UIColor+Palette.swift */,
 				4E92BE1828A68077008D437F /* PlayerContainerViewController.swift */,
 				FF0774173073BCA3001D6D76 /* PlaylistViewController.swift */,
 				FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */,
@@ -253,6 +256,7 @@
 				FF4203BB308C2E0000C25C71 /* EventChannel.swift in Sources */,
 				FF4203BD308C2F0000C25C71 /* PlaylistFilter.swift in Sources */,
 				FF4203C1308C310000C25C71 /* GroupSnapshot.swift in Sources */,
+				FF4203C3308C320000C25C71 /* UIColor+Palette.swift in Sources */,
 				FF420386308C1A4000C25C71 /* Group.swift in Sources */,
 				FF420388308C1C9000C25C71 /* GroupHeaderView.swift in Sources */,
 				FF420384308C0E3000C25C71 /* ImageService.swift in Sources */,

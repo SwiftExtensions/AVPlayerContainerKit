@@ -62,7 +62,7 @@ final class StreamCell: UITableViewCell {
         // фон прозрачный только в обычном состоянии, при выделении — системная подсветка
         self.configurationUpdateHandler = { cell, state in
             var background = UIBackgroundConfiguration.listPlainCell().updated(for: state)
-            background.backgroundColor = #colorLiteral(red: 0.6396284814, green: 0.8267727494, blue: 0.4965181588, alpha: 1)
+            background.backgroundColor = .streamSelection
             if !state.isSelected && !state.isHighlighted {
                 background.backgroundColor = .clear
             }

@@ -48,10 +48,10 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = #colorLiteral(red: 0.7224441171, green: 0.8850880265, blue: 0.5941329598, alpha: 1)
+        self.view.backgroundColor = .playlistBackground
         let playlistViewController = PlaylistViewController(service: self.playlistService)
         self.playlistViewController = playlistViewController
-        playlistViewController.view.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)
+        playlistViewController.view.backgroundColor = .playlistBackground
         self.addChildWithDefaultPlayerViewController(
             secondaryViewController: playlistViewController,
             isPlayerViewControllerPresented: false
