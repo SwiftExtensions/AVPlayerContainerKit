@@ -35,6 +35,9 @@
 		FF4203BD308C2F0000C25C71 /* PlaylistFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */; };
 		FF4203C1308C310000C25C71 /* GroupSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C0308C310000C25C71 /* GroupSnapshot.swift */; };
 		FF4203C3308C320000C25C71 /* UIColor+Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C2308C320000C25C71 /* UIColor+Palette.swift */; };
+		FF4203C5308C330000C25C71 /* PlaybackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C4308C330000C25C71 /* PlaybackService.swift */; };
+		FF4203C7308C340000C25C71 /* StreamEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C6308C340000C25C71 /* StreamEvent.swift */; };
+		FF4203C9308C350000C25C71 /* PlaylistServiceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C8308C350000C25C71 /* PlaylistServiceEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +70,9 @@
 		FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistFilter.swift; sourceTree = "<group>"; };
 		FF4203C0308C310000C25C71 /* GroupSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSnapshot.swift; sourceTree = "<group>"; };
 		FF4203C2308C320000C25C71 /* UIColor+Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Palette.swift"; sourceTree = "<group>"; };
+		FF4203C4308C330000C25C71 /* PlaybackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackService.swift; sourceTree = "<group>"; };
+		FF4203C6308C340000C25C71 /* StreamEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamEvent.swift; sourceTree = "<group>"; };
+		FF4203C8308C350000C25C71 /* PlaylistServiceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistServiceEvent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,7 @@
 				4E92BE0428A68047008D437F /* AppDelegate.swift */,
 				FF420387308C1C9000C25C71 /* GroupHeaderView.swift */,
 				4E92BE1828A68077008D437F /* PlayerContainerViewController.swift */,
+				FF4203C4308C330000C25C71 /* PlaybackService.swift */,
 				FF0774173073BCA3001D6D76 /* PlaylistViewController.swift */,
 				FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */,
 				4E92BE0628A68047008D437F /* SceneDelegate.swift */,
@@ -130,15 +137,13 @@
 		FF4203AD308B512E00C25C71 /* Playlist */ = {
 			isa = PBXGroup;
 			children = (
+				FFAF5EB130A716EE005ED5CB /* PlaylistServiceEvent */,
+				FFAF5EB230A71753005ED5CB /* PlaylistLoader */,
 				FF4203BA308C2E0000C25C71 /* EventChannel.swift */,
-				FF42037F308C0A1000C25C71 /* ExtInf.swift */,
-				FF420381308C0C7000C25C71 /* ExtInfParser.swift */,
 				FF420385308C1A4000C25C71 /* Group.swift */,
 				FF4203C0308C310000C25C71 /* GroupSnapshot.swift */,
 				FF42037D3088939900C25C71 /* Playlist.swift */,
-				FF4203B6308C2C0000C25C71 /* PlaylistEvent.swift */,
 				FF4203BC308C2F0000C25C71 /* PlaylistFilter.swift */,
-				FF07741D3073D359001D6D76 /* PlaylistLoader.swift */,
 				FF07742930889404001D6D76 /* PlaylistService.swift */,
 				FF4203B4308C2B0000C25C71 /* Settings.swift */,
 				FF4203B8308C2D0000C25C71 /* UnknownPlaybackError.swift */,
@@ -162,6 +167,26 @@
 				FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */,
 			);
 			path = ImageService;
+			sourceTree = "<group>";
+		};
+		FFAF5EB130A716EE005ED5CB /* PlaylistServiceEvent */ = {
+			isa = PBXGroup;
+			children = (
+				FF4203B6308C2C0000C25C71 /* PlaylistEvent.swift */,
+				FF4203C8308C350000C25C71 /* PlaylistServiceEvent.swift */,
+				FF4203C6308C340000C25C71 /* StreamEvent.swift */,
+			);
+			path = PlaylistServiceEvent;
+			sourceTree = "<group>";
+		};
+		FFAF5EB230A71753005ED5CB /* PlaylistLoader */ = {
+			isa = PBXGroup;
+			children = (
+				FF42037F308C0A1000C25C71 /* ExtInf.swift */,
+				FF420381308C0C7000C25C71 /* ExtInfParser.swift */,
+				FF07741D3073D359001D6D76 /* PlaylistLoader.swift */,
+			);
+			path = PlaylistLoader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +282,9 @@
 				FF4203BD308C2F0000C25C71 /* PlaylistFilter.swift in Sources */,
 				FF4203C1308C310000C25C71 /* GroupSnapshot.swift in Sources */,
 				FF4203C3308C320000C25C71 /* UIColor+Palette.swift in Sources */,
+				FF4203C5308C330000C25C71 /* PlaybackService.swift in Sources */,
+				FF4203C7308C340000C25C71 /* StreamEvent.swift in Sources */,
+				FF4203C9308C350000C25C71 /* PlaylistServiceEvent.swift in Sources */,
 				FF420386308C1A4000C25C71 /* Group.swift in Sources */,
 				FF420388308C1C9000C25C71 /* GroupHeaderView.swift in Sources */,
 				FF420384308C0E3000C25C71 /* ImageService.swift in Sources */,
