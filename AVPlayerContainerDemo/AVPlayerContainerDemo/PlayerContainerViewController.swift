@@ -70,11 +70,18 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
     // MARK: - Actions
 
     /**
-     Открывает экран настроек.
+     Открывает настройки модально.
+
+     Настройки — вспомогательный экран: презентация вместо push сохраняет
+     историю навигации, а `formSheet` на планшетах показывает форму
+     центрированной карточкой.
      */
     @objc private func showSettings() {
-        let controller = SettingsViewController(service: self.playlistService)
-        self.show(controller, sender: self)
+        let controller = UINavigationController(
+            rootViewController: SettingsViewController(service: self.playlistService)
+        )
+        controller.modalPresentationStyle = .formSheet
+        self.present(controller, animated: true)
     }
     /**
      Запускает работу сервиса плейлиста и наблюдение за его событиями.

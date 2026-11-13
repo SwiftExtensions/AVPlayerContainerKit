@@ -43,6 +43,12 @@ final class SettingsViewController: UITableViewController {
         super.viewDidLoad()
 
         self.title = "Настройки"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Готово",
+            style: .done,
+            target: self,
+            action: #selector(done)
+        )
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: Self.reuseIdentifier)
     }
 
@@ -81,6 +87,12 @@ final class SettingsViewController: UITableViewController {
      */
     @objc private func failedStreamsHiddenChanged(_ sender: UISwitch) {
         self.playlistService.setFailedStreamsHidden(sender.isOn)
+    }
+    /**
+     Закрывает настройки.
+     */
+    @objc private func done() {
+        self.dismiss(animated: true)
     }
 
 

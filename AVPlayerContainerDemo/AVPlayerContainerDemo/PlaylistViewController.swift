@@ -85,6 +85,8 @@ class PlaylistViewController: UITableViewController {
 
         // убирает системный отступ над заголовками секций
         self.tableView.sectionHeaderTopPadding = 0
+        // выделение играющего потока сохраняется при возврате с других экранов
+        self.clearsSelectionOnViewWillAppear = false
         self.tableView.register(StreamCell.self, forCellReuseIdentifier: StreamCell.reuseIdentifier)
         self.dataSource.defaultRowAnimation = .fade
     }
