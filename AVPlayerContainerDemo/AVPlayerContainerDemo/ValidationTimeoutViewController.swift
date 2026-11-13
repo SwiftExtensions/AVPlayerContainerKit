@@ -26,7 +26,7 @@ final class ValidationTimeoutViewController: UITableViewController {
     /**
      Доступные значения времени проверки потока в секундах.
      */
-    private static let timeouts: [TimeInterval] = [3, 5, 10, 15, 30]
+    private static let timeouts: [TimeInterval] = [1, 3, 5, 10, 15, 30]
 
     /**
      Создаёт контроллер выбора времени проверки потока.
