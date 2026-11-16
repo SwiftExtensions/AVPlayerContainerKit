@@ -14,6 +14,7 @@
 		4E92BE1128A68048008D437F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E92BE0F28A68048008D437F /* LaunchScreen.storyboard */; };
 		4E92BE1928A68077008D437F /* PlayerContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92BE1828A68077008D437F /* PlayerContainerViewController.swift */; };
 		4E92BE2228A6828F008D437F /* AVPlayerContainerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E92BE2128A6828F008D437F /* AVPlayerContainerKit */; };
+		FF4203D2308D600000C25C71 /* UserDefaultsKit in Frameworks */ = {isa = PBXBuildFile; productRef = FF4203D1308D600000C25C71 /* UserDefaultsKit */; };
 		FF0774183073BCA3001D6D76 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0774173073BCA3001D6D76 /* PlaylistViewController.swift */; };
 		FF07741C3073D213001D6D76 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07741B3073D213001D6D76 /* Stream.swift */; };
 		FF07741E3073D359001D6D76 /* PlaylistLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07741D3073D359001D6D76 /* PlaylistLoader.swift */; };
@@ -87,6 +88,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E92BE2228A6828F008D437F /* AVPlayerContainerKit in Frameworks */,
+				FF4203D2308D600000C25C71 /* UserDefaultsKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +218,7 @@
 			name = AVPlayerContainerDemo;
 			packageProductDependencies = (
 				4E92BE2128A6828F008D437F /* AVPlayerContainerKit */,
+				FF4203D1308D600000C25C71 /* UserDefaultsKit */,
 			);
 			productName = AVPlayerContainerDemo;
 			productReference = 4E92BE0128A68047008D437F /* AVPlayerContainerDemo.app */;
@@ -247,6 +250,7 @@
 			mainGroup = 4E92BDF828A68047008D437F;
 			packageReferences = (
 				4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference ".." */,
+				FF4203D0308D600000C25C71 /* XCRemoteSwiftPackageReference "UserDefaultsKit" */,
 			);
 			productRefGroup = 4E92BE0228A68047008D437F /* Products */;
 			projectDirPath = "";
@@ -532,11 +536,27 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		FF4203D0308D600000C25C71 /* XCRemoteSwiftPackageReference "UserDefaultsKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:SwiftExtensions/UserDefaultsKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		4E92BE2128A6828F008D437F /* AVPlayerContainerKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference ".." */;
 			productName = AVPlayerContainerKit;
+		};
+		FF4203D1308D600000C25C71 /* UserDefaultsKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF4203D0308D600000C25C71 /* XCRemoteSwiftPackageReference "UserDefaultsKit" */;
+			productName = UserDefaultsKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

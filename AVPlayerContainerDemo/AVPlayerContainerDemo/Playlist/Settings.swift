@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UserDefaultsKit
 
 /**
  Настройки отображения плейлиста.
@@ -19,33 +20,36 @@ struct Settings {
     static let defaultValidationTimeout: TimeInterval = 5.0
     
     /**
-     Ключ настройки «скрывать нерабочие потоки».
-     */
-    private static let hidesFailedStreamsKey = "hidesFailedStreams"
-    /**
-     Ключ настройки «время проверки потока».
-     */
-    private static let validationTimeoutKey = "validationTimeout"
-
-    /**
      Скрывает нерабочие потоки (с ошибкой) из отображения плейлиста.
      */
-    var isFailedStreamsHidden: Bool {
-        get { UserDefaults.standard.bool(forKey: Self.hidesFailedStreamsKey) }
-        set { UserDefaults.standard.set(newValue, forKey: Self.hidesFailedStreamsKey) }
-    }
+    @UserDefault(key: .hidesFailedStreams, defaultValue: false)
+    var isFailedStreamsHidden: Bool
     /**
      Максимальное время ожидания проверки одного потока в секундах.
      */
-    var validationTimeout: TimeInterval {
-        get {
-            UserDefaults.standard.object(forKey: Self.validationTimeoutKey) as? TimeInterval
-                ?? Self.defaultValidationTimeout
-        }
-        set { UserDefaults.standard.set(newValue, forKey: Self.validationTimeoutKey) }
-    }
+    @UserDefault(key: .validationTimeout, defaultValue: Self.defaultValidationTimeout)
+    var validationTimeout: TimeInterval
+
+    /**
+     Создаёт настройки со значениями из стандартных настроек пользователя.
+     */
+    init() { }
 
 
 }
 
+// MARK: - Ключи настроек
+
+private extension UserDefaults.Key {
+    /**
+     Ключ настройки «скрывать нерабочие потоки».
+     */
+    static let hidesFailedStreams: Self = "hidesFailedStreams"
+    /**
+     Ключ настройки «время проверки потока».
+     */
+    static let validationTimeout: Self = "validationTimeout"
+
+
+}
 

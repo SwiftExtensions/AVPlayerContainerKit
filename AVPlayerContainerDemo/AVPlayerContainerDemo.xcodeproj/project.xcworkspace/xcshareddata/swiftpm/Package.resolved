@@ -1,5 +1,5 @@
 {
-  "originHash" : "892829f59a9be6f630aa858534d7e0e4af9d371c2f0fb2b2acd2e2b692f95934",
+  "originHash" : "85fe4568d379ba795387e17b1af4272f9c6a23f5c41f256f7ccfaa0b74387223",
   "pins" : [
     {
       "identity" : "avplayerkit",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "a1784f69d2fab9785920fc17727c959bd020f94a",
         "version" : "2.5.0"
+      }
+    },
+    {
+      "identity" : "userdefaultskit",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:SwiftExtensions/UserDefaultsKit.git",
+      "state" : {
+        "revision" : "d769c64cf7077d1197f025968f77b56ddc122b99",
+        "version" : "1.0.0"
       }
     }
   ],
