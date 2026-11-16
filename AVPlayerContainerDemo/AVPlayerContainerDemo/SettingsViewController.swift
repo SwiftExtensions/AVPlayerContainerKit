@@ -24,9 +24,9 @@ final class SettingsViewController: UITableViewController {
      */
     private static let reuseIdentifier = "SettingCell"
     /**
-     Индекс раздела настройки времени проверки потока.
+     Индекс строки настройки времени проверки потока.
      */
-    private static let validationTimeoutSection = 1
+    private static let validationTimeoutRow = 1
 
     /**
      Создаёт контроллер настроек.
@@ -64,19 +64,9 @@ final class SettingsViewController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int { 2 }
+    override func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 1 }
-
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        section == Self.validationTimeoutSection ? "Проверка" : "Отображение"
-    }
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        if section == Self.validationTimeoutSection {
-            return "Максимальное время ожидания проверки одного потока. Применяется к следующим проверкам."
-        }
-        return "Нерабочими считаются потоки, проверка или воспроизведение которых завершилось ошибкой."
-    }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 2 }
 
     override func tableView(
         _ tableView: UITableView,
@@ -86,10 +76,10 @@ final class SettingsViewController: UITableViewController {
             withIdentifier: Self.reuseIdentifier,
             for: indexPath
         )
-        if indexPath.section == Self.validationTimeoutSection {
+        if indexPath.row == Self.validationTimeoutRow {
             // раскладка «в линию»: название слева, значение справа
             var configuration = UIListContentConfiguration.valueCell()
-            configuration.text = "Время проверки"
+            configuration.text = "Время проверки потока"
             configuration.image = UIImage(systemName: "timer")
             configuration.secondaryText = "\(Int(self.playlistService.validationTimeout)) с"
             cell.contentConfiguration = configuration
@@ -113,7 +103,7 @@ final class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard indexPath.section == Self.validationTimeoutSection else { return }
+        guard indexPath.row == Self.validationTimeoutRow else { return }
         let controller = ValidationTimeoutViewController(service: self.playlistService)
         self.navigationController?.pushViewController(controller, animated: true)
     }
