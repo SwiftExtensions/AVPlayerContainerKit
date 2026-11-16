@@ -19,6 +19,11 @@ import AVPlayerContainerKit
  */
 final class PlayerContainerViewController: AVPlayerContainerViewController<PlayerViewController> {
     /**
+     Контроллер плейлиста.
+     */
+    private weak var playlistViewController: PlaylistViewController?
+    
+    /**
      Сервис плейлиста.
      */
     private let playlistService = PlaylistService()
@@ -30,10 +35,6 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
      Оверлей переключения канала поверх плеера.
      */
     private let channelOverlayView = ChannelOverlayView()
-    /**
-     Контроллер плейлиста.
-     */
-    private weak var playlistViewController: PlaylistViewController?
     /**
      Политика воспроизведения плейлиста.
      */
@@ -210,18 +211,20 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
         self.remoteControlService.streamDidStart(stream)
     }
     /**
-     Добавляет оверлей переключения канала по центру вью плеера.
+     Добавляет оверлей переключения канала по центру информационного
+     слоя плеера.
      */
     private func setupChannelOverlayView() {
         let overlayView = self.channelOverlayView
         overlayView.translatesAutoresizingMaskIntoConstraints = false
-        let playerView = self.playerViewController.view!
-        playerView.addSubview(overlayView)
+        guard let statusView = self.playerViewController.statusView else { return }
+        
+        statusView.addSubview(overlayView)
         NSLayoutConstraint.activate([
-            overlayView.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
-            overlayView.centerYAnchor.constraint(equalTo: playerView.centerYAnchor),
+            overlayView.centerXAnchor.constraint(equalTo: statusView.centerXAnchor),
+            overlayView.centerYAnchor.constraint(equalTo: statusView.centerYAnchor),
             overlayView.widthAnchor.constraint(
-                lessThanOrEqualTo: playerView.widthAnchor,
+                lessThanOrEqualTo: statusView.widthAnchor,
                 multiplier: 0.8
             )
         ])
