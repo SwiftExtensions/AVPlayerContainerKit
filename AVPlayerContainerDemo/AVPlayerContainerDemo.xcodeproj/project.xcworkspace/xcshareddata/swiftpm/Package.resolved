@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftExtensions/AVPlayerKit",
       "state" : {
-        "revision" : "e979542e63e46b3728e0b327bdf11b9b52e64883",
-        "version" : "2.6.0"
+        "revision" : "e272401cd9f260a5b68fdbb41d6ffe969eb8f08e",
+        "version" : "2.6.1"
       }
     },
     {
