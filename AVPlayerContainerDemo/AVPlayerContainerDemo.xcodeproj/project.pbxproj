@@ -45,6 +45,9 @@
 		FF4203D4308D9A0000C25C71 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D3308D9A0000C25C71 /* TaskQueue.swift */; };
 		FF4203D5308DA00000C25C71 /* TaskQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */; };
 		FF4203E0308DA00000C25C71 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D3308D9A0000C25C71 /* TaskQueue.swift */; };
+		FF4203E2308DB00000C25C71 /* Subscribers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E1308DB00000C25C71 /* Subscribers.swift */; };
+		FF4203E4308DC00000C25C71 /* SubscribersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E3308DC00000C25C71 /* SubscribersTests.swift */; };
+		FF4203E5308DC00000C25C71 /* Subscribers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E1308DB00000C25C71 /* Subscribers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,7 +87,9 @@
 		FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelOverlayView.swift; sourceTree = "<group>"; };
 		FF4203CE308C380000C25C71 /* RemoteControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlService.swift; sourceTree = "<group>"; };
 		FF4203D3308D9A0000C25C71 /* TaskQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueue.swift; sourceTree = "<group>"; };
+		FF4203E1308DB00000C25C71 /* Subscribers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscribers.swift; sourceTree = "<group>"; };
 		FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueueTests.swift; sourceTree = "<group>"; };
+		FF4203E3308DC00000C25C71 /* SubscribersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribersTests.swift; sourceTree = "<group>"; };
 		FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AVPlayerContainerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -191,6 +196,7 @@
 			children = (
 				FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */,
 				FF420383308C0E3000C25C71 /* ImageService.swift */,
+				FF4203E1308DB00000C25C71 /* Subscribers.swift */,
 				FF4203D3308D9A0000C25C71 /* TaskQueue.swift */,
 			);
 			path = ImageService;
@@ -200,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */,
+				FF4203E3308DC00000C25C71 /* SubscribersTests.swift */,
 			);
 			path = AVPlayerContainerDemoTests;
 			sourceTree = "<group>";
@@ -363,6 +370,7 @@
 				FF07742430889401001D6D76 /* StreamCell.swift in Sources */,
 				FF07742630889402001D6D76 /* StreamStore.swift in Sources */,
 				FF4203D4308D9A0000C25C71 /* TaskQueue.swift in Sources */,
+				FF4203E2308DB00000C25C71 /* Subscribers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,7 +379,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF4203D5308DA00000C25C71 /* TaskQueueTests.swift in Sources */,
+				FF4203E4308DC00000C25C71 /* SubscribersTests.swift in Sources */,
 				FF4203E0308DA00000C25C71 /* TaskQueue.swift in Sources */,
+				FF4203E5308DC00000C25C71 /* Subscribers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
