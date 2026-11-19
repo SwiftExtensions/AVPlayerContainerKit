@@ -42,7 +42,9 @@ final class StreamCell: UITableViewCell {
      Представление с логотипом канала.
 
      Изображение задаётся владельцем — контроллером плейлиста,
-     который загружает его по адресу из атрибута `tvg-logo`.
+     который загружает его по адресу из атрибута `tvg-logo`. Место
+     под логотип резервируется всегда — текст не смещается при
+     загрузке изображения.
      */
     private let logoImageView = UIImageView()
     /**
@@ -95,17 +97,18 @@ final class StreamCell: UITableViewCell {
         self.emojiLabel.isHidden = true
         self.activityIndicator.stopAnimating()
         self.logoImageView.image = nil
-        self.logoImageView.isHidden = true
     }
 
     /**
      Отображает логотип канала.
 
-     - Parameter image: Логотип канала. `nil` скрывает логотип.
+     `nil` очищает изображение: место под логотип сохраняется,
+     чтобы текст не смещался при загрузке.
+
+     - Parameter image: Логотип канала.
      */
     func setLogo(_ image: UIImage?) {
         self.logoImageView.image = image
-        self.logoImageView.isHidden = image == nil
     }
 
     /**
@@ -136,7 +139,6 @@ final class StreamCell: UITableViewCell {
         self.titleLabel.numberOfLines = 1
 
         self.logoImageView.contentMode = .scaleAspectFit
-        self.logoImageView.isHidden = true
         self.logoImageView.translatesAutoresizingMaskIntoConstraints = false
 
         self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
