@@ -35,9 +35,10 @@ actor ImageLoader {
     func image(from url: URL) async throws -> UIImage {
         let task = self.loadingTasks[url] ?? self.startLoading(from: url)
         self.loadingTasks[url] = task
-        // отменённая задача не удаляется: запись могла быть заменена новой
         defer {
-            if !task.isCancelled {
+            // убираем запись, только если в словаре ещё лежит наша задача:
+            // отменённую могли удалить и заменить новой задачей с тем же адресом
+            if self.loadingTasks[url] == task {
                 self.loadingTasks[url] = nil
             }
         }
