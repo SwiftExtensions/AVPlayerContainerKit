@@ -48,6 +48,10 @@
 		FF4203E2308DB00000C25C71 /* Subscribers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E1308DB00000C25C71 /* Subscribers.swift */; };
 		FF4203E4308DC00000C25C71 /* SubscribersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E3308DC00000C25C71 /* SubscribersTests.swift */; };
 		FF4203E5308DC00000C25C71 /* Subscribers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E1308DB00000C25C71 /* Subscribers.swift */; };
+		FF4203E7308DD00000C25C71 /* SharedTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E6308DD00000C25C71 /* SharedTasks.swift */; };
+		FF4203E8308DD00000C25C71 /* SharedTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E6308DD00000C25C71 /* SharedTasks.swift */; };
+		FF4203EA308DE00000C25C71 /* SharedTasksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E9308DE00000C25C71 /* SharedTasksTests.swift */; };
+		FF4203EC308DE00000C25C71 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203EB308DE00000C25C71 /* TestHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +94,9 @@
 		FF4203E1308DB00000C25C71 /* Subscribers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscribers.swift; sourceTree = "<group>"; };
 		FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueueTests.swift; sourceTree = "<group>"; };
 		FF4203E3308DC00000C25C71 /* SubscribersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribersTests.swift; sourceTree = "<group>"; };
+		FF4203E6308DD00000C25C71 /* SharedTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTasks.swift; sourceTree = "<group>"; };
+		FF4203E9308DE00000C25C71 /* SharedTasksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTasksTests.swift; sourceTree = "<group>"; };
+		FF4203EB308DE00000C25C71 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AVPlayerContainerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -196,6 +203,7 @@
 			children = (
 				FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */,
 				FF420383308C0E3000C25C71 /* ImageService.swift */,
+				FF4203E6308DD00000C25C71 /* SharedTasks.swift */,
 				FF4203E1308DB00000C25C71 /* Subscribers.swift */,
 				FF4203D3308D9A0000C25C71 /* TaskQueue.swift */,
 			);
@@ -207,6 +215,8 @@
 			children = (
 				FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */,
 				FF4203E3308DC00000C25C71 /* SubscribersTests.swift */,
+				FF4203E9308DE00000C25C71 /* SharedTasksTests.swift */,
+				FF4203EB308DE00000C25C71 /* TestHelpers.swift */,
 			);
 			path = AVPlayerContainerDemoTests;
 			sourceTree = "<group>";
@@ -371,6 +381,7 @@
 				FF07742630889402001D6D76 /* StreamStore.swift in Sources */,
 				FF4203D4308D9A0000C25C71 /* TaskQueue.swift in Sources */,
 				FF4203E2308DB00000C25C71 /* Subscribers.swift in Sources */,
+				FF4203E7308DD00000C25C71 /* SharedTasks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +393,9 @@
 				FF4203E4308DC00000C25C71 /* SubscribersTests.swift in Sources */,
 				FF4203E0308DA00000C25C71 /* TaskQueue.swift in Sources */,
 				FF4203E5308DC00000C25C71 /* Subscribers.swift in Sources */,
+				FF4203E8308DD00000C25C71 /* SharedTasks.swift in Sources */,
+				FF4203EA308DE00000C25C71 /* SharedTasksTests.swift in Sources */,
+				FF4203EC308DE00000C25C71 /* TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
