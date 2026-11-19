@@ -14,7 +14,6 @@
 		4E92BE1128A68048008D437F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E92BE0F28A68048008D437F /* LaunchScreen.storyboard */; };
 		4E92BE1928A68077008D437F /* PlayerContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E92BE1828A68077008D437F /* PlayerContainerViewController.swift */; };
 		4E92BE2228A6828F008D437F /* AVPlayerContainerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E92BE2128A6828F008D437F /* AVPlayerContainerKit */; };
-		FF4203D2308D600000C25C71 /* UserDefaultsKit in Frameworks */ = {isa = PBXBuildFile; productRef = FF4203D1308D600000C25C71 /* UserDefaultsKit */; };
 		FF0774183073BCA3001D6D76 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0774173073BCA3001D6D76 /* PlaylistViewController.swift */; };
 		FF07741C3073D213001D6D76 /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07741B3073D213001D6D76 /* Stream.swift */; };
 		FF07741E3073D359001D6D76 /* PlaylistLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF07741D3073D359001D6D76 /* PlaylistLoader.swift */; };
@@ -29,9 +28,6 @@
 		FF420388308C1C9000C25C71 /* GroupHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF420387308C1C9000C25C71 /* GroupHeaderView.swift */; };
 		FF4203B0308B7BCD00C25C71 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */; };
 		FF4203B3308C2A0000C25C71 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */; };
-		FF4203CB308C360000C25C71 /* ValidationTimeoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */; };
-		FF4203CC308C370000C25C71 /* ChannelOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */; };
-		FF4203CF308C380000C25C71 /* RemoteControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CE308C380000C25C71 /* RemoteControlService.swift */; };
 		FF4203B5308C2B0000C25C71 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B4308C2B0000C25C71 /* Settings.swift */; };
 		FF4203B7308C2C0000C25C71 /* PlaylistEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B6308C2C0000C25C71 /* PlaylistEvent.swift */; };
 		FF4203B9308C2D0000C25C71 /* UnknownPlaybackError.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203B8308C2D0000C25C71 /* UnknownPlaybackError.swift */; };
@@ -42,6 +38,13 @@
 		FF4203C5308C330000C25C71 /* PlaybackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C4308C330000C25C71 /* PlaybackService.swift */; };
 		FF4203C7308C340000C25C71 /* StreamEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C6308C340000C25C71 /* StreamEvent.swift */; };
 		FF4203C9308C350000C25C71 /* PlaylistServiceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C8308C350000C25C71 /* PlaylistServiceEvent.swift */; };
+		FF4203CB308C360000C25C71 /* ValidationTimeoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */; };
+		FF4203CC308C370000C25C71 /* ChannelOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */; };
+		FF4203CF308C380000C25C71 /* RemoteControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CE308C380000C25C71 /* RemoteControlService.swift */; };
+		FF4203D2308D600000C25C71 /* UserDefaultsKit in Frameworks */ = {isa = PBXBuildFile; productRef = FF4203D1308D600000C25C71 /* UserDefaultsKit */; };
+		FF4203D4308D9A0000C25C71 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D3308D9A0000C25C71 /* TaskQueue.swift */; };
+		FF4203D5308DA00000C25C71 /* TaskQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */; };
+		FF4203E0308DA00000C25C71 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D3308D9A0000C25C71 /* TaskQueue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -65,11 +68,8 @@
 		FF420383308C0E3000C25C71 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		FF420385308C1A4000C25C71 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		FF420387308C1C9000C25C71 /* GroupHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupHeaderView.swift; sourceTree = "<group>"; };
-		FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelOverlayView.swift; sourceTree = "<group>"; };
 		FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTimeoutViewController.swift; sourceTree = "<group>"; };
-		FF4203CE308C380000C25C71 /* RemoteControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlService.swift; sourceTree = "<group>"; };
 		FF4203B4308C2B0000C25C71 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		FF4203B6308C2C0000C25C71 /* PlaylistEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistEvent.swift; sourceTree = "<group>"; };
 		FF4203B8308C2D0000C25C71 /* UnknownPlaybackError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnknownPlaybackError.swift; sourceTree = "<group>"; };
@@ -80,6 +80,12 @@
 		FF4203C4308C330000C25C71 /* PlaybackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackService.swift; sourceTree = "<group>"; };
 		FF4203C6308C340000C25C71 /* StreamEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamEvent.swift; sourceTree = "<group>"; };
 		FF4203C8308C350000C25C71 /* PlaylistServiceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistServiceEvent.swift; sourceTree = "<group>"; };
+		FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTimeoutViewController.swift; sourceTree = "<group>"; };
+		FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelOverlayView.swift; sourceTree = "<group>"; };
+		FF4203CE308C380000C25C71 /* RemoteControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlService.swift; sourceTree = "<group>"; };
+		FF4203D3308D9A0000C25C71 /* TaskQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueue.swift; sourceTree = "<group>"; };
+		FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueueTests.swift; sourceTree = "<group>"; };
+		FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AVPlayerContainerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +98,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FF4203DA308DA00000C25C71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -99,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				4E92BE0328A68047008D437F /* AVPlayerContainerDemo */,
+				FF4203D8308DA00000C25C71 /* AVPlayerContainerDemoTests */,
 				4E92BE0228A68047008D437F /* Products */,
 				4E92BE2028A6828F008D437F /* Frameworks */,
 			);
@@ -108,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				4E92BE0128A68047008D437F /* AVPlayerContainerDemo.app */,
+				FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,10 +189,19 @@
 		FF4203B1308B9FA100C25C71 /* ImageService */ = {
 			isa = PBXGroup;
 			children = (
-				FF420383308C0E3000C25C71 /* ImageService.swift */,
 				FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */,
+				FF420383308C0E3000C25C71 /* ImageService.swift */,
+				FF4203D3308D9A0000C25C71 /* TaskQueue.swift */,
 			);
 			path = ImageService;
+			sourceTree = "<group>";
+		};
+		FF4203D8308DA00000C25C71 /* AVPlayerContainerDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */,
+			);
+			path = AVPlayerContainerDemoTests;
 			sourceTree = "<group>";
 		};
 		FFAF5EB130A716EE005ED5CB /* PlaylistServiceEvent */ = {
@@ -224,6 +248,23 @@
 			productReference = 4E92BE0128A68047008D437F /* AVPlayerContainerDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FF4203DC308DA00000C25C71 /* AVPlayerContainerDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF4203DF308DA00000C25C71 /* Build configuration list for PBXNativeTarget "AVPlayerContainerDemoTests" */;
+			buildPhases = (
+				FF4203D9308DA00000C25C71 /* Sources */,
+				FF4203DA308DA00000C25C71 /* Frameworks */,
+				FF4203DB308DA00000C25C71 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AVPlayerContainerDemoTests;
+			productName = AVPlayerContainerDemoTests;
+			productReference = FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -236,6 +277,10 @@
 				TargetAttributes = {
 					4E92BE0028A68047008D437F = {
 						CreatedOnToolsVersion = 13.4.1;
+					};
+					FF4203DC308DA00000C25C71 = {
+						CreatedOnToolsVersion = 13.4.1;
+						TestTargetID = 4E92BE0028A68047008D437F;
 					};
 				};
 			};
@@ -257,6 +302,7 @@
 			projectRoot = "";
 			targets = (
 				4E92BE0028A68047008D437F /* AVPlayerContainerDemo */,
+				FF4203DC308DA00000C25C71 /* AVPlayerContainerDemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -269,6 +315,13 @@
 				4E92BE1128A68048008D437F /* LaunchScreen.storyboard in Resources */,
 				4E92BE0E28A68048008D437F /* Assets.xcassets in Resources */,
 				4E92BE0C28A68047008D437F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4203DB308DA00000C25C71 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -309,6 +362,16 @@
 				FF07741C3073D213001D6D76 /* Stream.swift in Sources */,
 				FF07742430889401001D6D76 /* StreamCell.swift in Sources */,
 				FF07742630889402001D6D76 /* StreamStore.swift in Sources */,
+				FF4203D4308D9A0000C25C71 /* TaskQueue.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF4203D9308DA00000C25C71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF4203D5308DA00000C25C71 /* TaskQueueTests.swift in Sources */,
+				FF4203E0308DA00000C25C71 /* TaskQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +569,48 @@
 			};
 			name = Release;
 		};
+		FF4203DD308DA00000C25C71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SQ2J8S5B39;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = tv.limehd.AVPlayerContainerDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FF4203DE308DA00000C25C71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = SQ2J8S5B39;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = tv.limehd.AVPlayerContainerDemoTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -523,6 +628,15 @@
 			buildConfigurations = (
 				4E92BE1628A68048008D437F /* Debug */,
 				4E92BE1728A68048008D437F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF4203DF308DA00000C25C71 /* Build configuration list for PBXNativeTarget "AVPlayerContainerDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF4203DD308DA00000C25C71 /* Debug */,
+				FF4203DE308DA00000C25C71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
