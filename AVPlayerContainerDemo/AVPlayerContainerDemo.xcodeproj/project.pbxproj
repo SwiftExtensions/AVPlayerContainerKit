@@ -38,7 +38,7 @@
 		FF4203C5308C330000C25C71 /* PlaybackService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C4308C330000C25C71 /* PlaybackService.swift */; };
 		FF4203C7308C340000C25C71 /* StreamEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C6308C340000C25C71 /* StreamEvent.swift */; };
 		FF4203C9308C350000C25C71 /* PlaylistServiceEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203C8308C350000C25C71 /* PlaylistServiceEvent.swift */; };
-		FF4203CB308C360000C25C71 /* ValidationTimeoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */; };
+		FF4203CB308C360000C25C71 /* TimeoutPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CA308C360000C25C71 /* TimeoutPickerViewController.swift */; };
 		FF4203CC308C370000C25C71 /* ChannelOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */; };
 		FF4203CF308C380000C25C71 /* RemoteControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CE308C380000C25C71 /* RemoteControlService.swift */; };
 		FF4203D2308D600000C25C71 /* UserDefaultsKit in Frameworks */ = {isa = PBXBuildFile; productRef = FF4203D1308D600000C25C71 /* UserDefaultsKit */; };
@@ -78,7 +78,7 @@
 		FF4203C4308C330000C25C71 /* PlaybackService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackService.swift; sourceTree = "<group>"; };
 		FF4203C6308C340000C25C71 /* StreamEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamEvent.swift; sourceTree = "<group>"; };
 		FF4203C8308C350000C25C71 /* PlaylistServiceEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistServiceEvent.swift; sourceTree = "<group>"; };
-		FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTimeoutViewController.swift; sourceTree = "<group>"; };
+		FF4203CA308C360000C25C71 /* TimeoutPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeoutPickerViewController.swift; sourceTree = "<group>"; };
 		FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelOverlayView.swift; sourceTree = "<group>"; };
 		FF4203CE308C380000C25C71 /* RemoteControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -128,7 +128,7 @@
 				FF4203C4308C330000C25C71 /* PlaybackService.swift */,
 				FF0774173073BCA3001D6D76 /* PlaylistViewController.swift */,
 				FF4203B2308C2A0000C25C71 /* SettingsViewController.swift */,
-				FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */,
+				FF4203CA308C360000C25C71 /* TimeoutPickerViewController.swift */,
 				4E92BE0628A68047008D437F /* SceneDelegate.swift */,
 				FF07742330889401001D6D76 /* StreamCell.swift */,
 				FF4203C2308C320000C25C71 /* UIColor+Palette.swift */,
@@ -292,7 +292,7 @@
 				FF420380308C0A1000C25C71 /* ExtInf.swift in Sources */,
 				FF420382308C0C7000C25C71 /* ExtInfParser.swift in Sources */,
 				FF4203B3308C2A0000C25C71 /* SettingsViewController.swift in Sources */,
-				FF4203CB308C360000C25C71 /* ValidationTimeoutViewController.swift in Sources */,
+				FF4203CB308C360000C25C71 /* TimeoutPickerViewController.swift in Sources */,
 				FF4203B5308C2B0000C25C71 /* Settings.swift in Sources */,
 				FF4203B7308C2C0000C25C71 /* PlaylistEvent.swift in Sources */,
 				FF4203B9308C2D0000C25C71 /* UnknownPlaybackError.swift in Sources */,

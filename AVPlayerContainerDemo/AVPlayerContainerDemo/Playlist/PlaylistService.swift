@@ -55,6 +55,13 @@ final class PlaylistService {
      Настройка сохраняется в настройках плейлиста.
      */
     var validationTimeout: TimeInterval { self.settings.validationTimeout }
+    /**
+     Максимальное время ожидания запуска воспроизведения потока
+     в секундах.
+
+     Настройка сохраняется в настройках плейлиста.
+     */
+    var playbackTimeout: TimeInterval { self.settings.playbackTimeout }
 
     /**
      Плейлист.
@@ -110,6 +117,16 @@ final class PlaylistService {
      */
     func setValidationTimeout(_ timeout: TimeInterval) {
         self.settings.validationTimeout = timeout
+    }
+    /**
+     Задаёт максимальное время ожидания запуска воспроизведения потока.
+
+     Новое значение применяется к следующим запускам воспроизведения.
+
+     - Parameter timeout: Новое время ожидания в секундах.
+     */
+    func setPlaybackTimeout(_ timeout: TimeInterval) {
+        self.settings.playbackTimeout = timeout
     }
     /**
      Скрывает или показывает нерабочие потоки и сообщает о перезагрузке

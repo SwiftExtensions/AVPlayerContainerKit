@@ -51,6 +51,12 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
         }
     )
     /**
+     Работа контроля времени запуска потока.
+
+     Отменяется и заменяется при каждом запуске воспроизведения.
+     */
+    private var startupWatchdog: DispatchWorkItem?
+    /**
      Сервис дистанционного управления воспроизведением.
      */
     private lazy var remoteControlService = RemoteControlService(
@@ -207,8 +213,30 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<Playe
     private func performPlayback(stream: Stream, at indexPath: IndexPath) {
         self.playerViewController.player?.replaceCurrentItem(with: stream.url)
         self.playerViewController.player?.play()
+        self.watchStreamStartup()
         self.showChannelOverlay(for: stream)
         self.remoteControlService.streamDidStart(stream)
+    }
+    /**
+     Запускает контроль времени запуска потока.
+
+     По истечении настройки «время запуска потока» воспроизведение,
+     оставшееся в ожидании буферизации, считается сбойным: об ошибке
+     сообщается сервису воспроизведения. Настройка применяется
+     к следующим запускам.
+     */
+    private func watchStreamStartup() {
+        self.startupWatchdog?.cancel()
+        let timeout = self.playlistService.playbackTimeout
+        let watchdog = DispatchWorkItem { [weak self] in
+            // поток всё ещё ждёт буферизации — запуск сорвался
+            guard self?.playerViewController.player?.timeControlStatus == .waitingToPlayAtSpecifiedRate
+            else { return }
+
+            self?.playbackService.streamPlaybackFailed(URLError(.timedOut))
+        }
+        self.startupWatchdog = watchdog
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout, execute: watchdog)
     }
     /**
      Добавляет оверлей переключения канала по центру информационного

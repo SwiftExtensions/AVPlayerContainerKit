@@ -27,6 +27,10 @@ final class SettingsViewController: UITableViewController {
      Индекс строки настройки времени проверки потока.
      */
     private static let validationTimeoutRow = 1
+    /**
+     Индекс строки настройки времени запуска потока.
+     */
+    private static let playbackTimeoutRow = 2
 
     /**
      Создаёт контроллер настроек.
@@ -66,7 +70,7 @@ final class SettingsViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int { 1 }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 2 }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 3 }
 
     override func tableView(
         _ tableView: UITableView,
@@ -82,6 +86,13 @@ final class SettingsViewController: UITableViewController {
             configuration.text = "Время проверки потока"
             configuration.image = UIImage(systemName: "timer")
             configuration.secondaryText = "\(Int(self.playlistService.validationTimeout)) с"
+            cell.contentConfiguration = configuration
+            cell.accessoryType = .disclosureIndicator
+        } else if indexPath.row == Self.playbackTimeoutRow {
+            var configuration = UIListContentConfiguration.valueCell()
+            configuration.text = "Время запуска потока"
+            configuration.image = UIImage(systemName: "play.circle")
+            configuration.secondaryText = "\(Int(self.playlistService.playbackTimeout)) с"
             cell.contentConfiguration = configuration
             cell.accessoryType = .disclosureIndicator
         } else {
@@ -103,9 +114,30 @@ final class SettingsViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard indexPath.row == Self.validationTimeoutRow else { return }
-        let controller = ValidationTimeoutViewController(service: self.playlistService)
-        self.navigationController?.pushViewController(controller, animated: true)
+        switch indexPath.row {
+        case Self.validationTimeoutRow:
+            let controller = TimeoutPickerViewController(
+                title: "Время проверки",
+                timeouts: [1, 3, 5, 10, 15, 30],
+                footerTitle: "Максимальное время ожидания проверки одного потока. Применяется к следующим проверкам.",
+                selectedTimeout: self.playlistService.validationTimeout
+            ) { [weak self] timeout in
+                self?.playlistService.setValidationTimeout(timeout)
+            }
+            self.navigationController?.pushViewController(controller, animated: true)
+        case Self.playbackTimeoutRow:
+            let controller = TimeoutPickerViewController(
+                title: "Время запуска",
+                timeouts: [5, 10, 15, 30, 60],
+                footerTitle: "Максимальное время ожидания запуска воспроизведения потока. Применяется к следующим запускам.",
+                selectedTimeout: self.playlistService.playbackTimeout
+            ) { [weak self] timeout in
+                self?.playlistService.setPlaybackTimeout(timeout)
+            }
+            self.navigationController?.pushViewController(controller, animated: true)
+        default:
+            break
+        }
     }
 
     // MARK: - Actions
