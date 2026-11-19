@@ -1,5 +1,5 @@
 {
-  "originHash" : "85fe4568d379ba795387e17b1af4272f9c6a23f5c41f256f7ccfaa0b74387223",
+  "originHash" : "24297273b964f53b20e089d3d50d7331ae4e41e16d44628b2af6919091875a0e",
   "pins" : [
     {
       "identity" : "activitylabel",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "d5b8e94c14b48f3b9639a9922b1cd77d4a2a6a7b",
         "version" : "2.7.0"
+      }
+    },
+    {
+      "identity" : "sharedtaskkit",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:SwiftExtensions/SharedTaskKit.git",
+      "state" : {
+        "revision" : "851a24d541c5cef07a32126ec9f72a0129944b0c",
+        "version" : "0.2.0"
       }
     },
     {

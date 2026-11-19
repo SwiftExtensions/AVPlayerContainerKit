@@ -55,6 +55,15 @@ final class StreamCell: UITableViewCell {
      Пока флаг установлен, содержимое задаётся без анимации.
      */
     private var needsInitialConfiguration = true
+    /**
+     Задача загрузки логотипа канала.
+
+     Задаётся владельцем — контроллером плейлиста. Замена задачи
+     новой или `nil` отменяет предыдущую загрузку.
+     */
+    var logoTask: Task<Void, Never>? {
+        willSet { self.logoTask?.cancel() }
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -81,6 +90,7 @@ final class StreamCell: UITableViewCell {
 
         // сброс содержимого без анимации перед переиспользованием
         self.needsInitialConfiguration = true
+        self.logoTask = nil
         self.emojiLabel.text = nil
         self.emojiLabel.isHidden = true
         self.activityIndicator.stopAnimating()

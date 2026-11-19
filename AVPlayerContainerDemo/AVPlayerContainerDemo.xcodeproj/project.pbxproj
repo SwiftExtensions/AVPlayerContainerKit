@@ -42,16 +42,7 @@
 		FF4203CC308C370000C25C71 /* ChannelOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */; };
 		FF4203CF308C380000C25C71 /* RemoteControlService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203CE308C380000C25C71 /* RemoteControlService.swift */; };
 		FF4203D2308D600000C25C71 /* UserDefaultsKit in Frameworks */ = {isa = PBXBuildFile; productRef = FF4203D1308D600000C25C71 /* UserDefaultsKit */; };
-		FF4203D4308D9A0000C25C71 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D3308D9A0000C25C71 /* TaskQueue.swift */; };
-		FF4203D5308DA00000C25C71 /* TaskQueueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */; };
-		FF4203E0308DA00000C25C71 /* TaskQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203D3308D9A0000C25C71 /* TaskQueue.swift */; };
-		FF4203E2308DB00000C25C71 /* Subscribers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E1308DB00000C25C71 /* Subscribers.swift */; };
-		FF4203E4308DC00000C25C71 /* SubscribersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E3308DC00000C25C71 /* SubscribersTests.swift */; };
-		FF4203E5308DC00000C25C71 /* Subscribers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E1308DB00000C25C71 /* Subscribers.swift */; };
-		FF4203E7308DD00000C25C71 /* SharedTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E6308DD00000C25C71 /* SharedTasks.swift */; };
-		FF4203E8308DD00000C25C71 /* SharedTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E6308DD00000C25C71 /* SharedTasks.swift */; };
-		FF4203EA308DE00000C25C71 /* SharedTasksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203E9308DE00000C25C71 /* SharedTasksTests.swift */; };
-		FF4203EC308DE00000C25C71 /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4203EB308DE00000C25C71 /* TestHelpers.swift */; };
+		FF4203F0308DF00000C25C71 /* SharedTaskKit in Frameworks */ = {isa = PBXBuildFile; productRef = FF4203F1308DF00000C25C71 /* SharedTaskKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,14 +81,6 @@
 		FF4203CA308C360000C25C71 /* ValidationTimeoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationTimeoutViewController.swift; sourceTree = "<group>"; };
 		FF4203CB308C370000C25C71 /* ChannelOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelOverlayView.swift; sourceTree = "<group>"; };
 		FF4203CE308C380000C25C71 /* RemoteControlService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlService.swift; sourceTree = "<group>"; };
-		FF4203D3308D9A0000C25C71 /* TaskQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueue.swift; sourceTree = "<group>"; };
-		FF4203E1308DB00000C25C71 /* Subscribers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscribers.swift; sourceTree = "<group>"; };
-		FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskQueueTests.swift; sourceTree = "<group>"; };
-		FF4203E3308DC00000C25C71 /* SubscribersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribersTests.swift; sourceTree = "<group>"; };
-		FF4203E6308DD00000C25C71 /* SharedTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTasks.swift; sourceTree = "<group>"; };
-		FF4203E9308DE00000C25C71 /* SharedTasksTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTasksTests.swift; sourceTree = "<group>"; };
-		FF4203EB308DE00000C25C71 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
-		FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AVPlayerContainerDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,13 +90,7 @@
 			files = (
 				4E92BE2228A6828F008D437F /* AVPlayerContainerKit in Frameworks */,
 				FF4203D2308D600000C25C71 /* UserDefaultsKit in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FF4203DA308DA00000C25C71 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				FF4203F0308DF00000C25C71 /* SharedTaskKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +101,6 @@
 			isa = PBXGroup;
 			children = (
 				4E92BE0328A68047008D437F /* AVPlayerContainerDemo */,
-				FF4203D8308DA00000C25C71 /* AVPlayerContainerDemoTests */,
 				4E92BE0228A68047008D437F /* Products */,
 				4E92BE2028A6828F008D437F /* Frameworks */,
 			);
@@ -134,7 +110,6 @@
 			isa = PBXGroup;
 			children = (
 				4E92BE0128A68047008D437F /* AVPlayerContainerDemo.app */,
-				FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -203,22 +178,8 @@
 			children = (
 				FF4203AF308B7BCD00C25C71 /* ImageLoader.swift */,
 				FF420383308C0E3000C25C71 /* ImageService.swift */,
-				FF4203E6308DD00000C25C71 /* SharedTasks.swift */,
-				FF4203E1308DB00000C25C71 /* Subscribers.swift */,
-				FF4203D3308D9A0000C25C71 /* TaskQueue.swift */,
 			);
 			path = ImageService;
-			sourceTree = "<group>";
-		};
-		FF4203D8308DA00000C25C71 /* AVPlayerContainerDemoTests */ = {
-			isa = PBXGroup;
-			children = (
-				FF4203D6308DA00000C25C71 /* TaskQueueTests.swift */,
-				FF4203E3308DC00000C25C71 /* SubscribersTests.swift */,
-				FF4203E9308DE00000C25C71 /* SharedTasksTests.swift */,
-				FF4203EB308DE00000C25C71 /* TestHelpers.swift */,
-			);
-			path = AVPlayerContainerDemoTests;
 			sourceTree = "<group>";
 		};
 		FFAF5EB130A716EE005ED5CB /* PlaylistServiceEvent */ = {
@@ -260,27 +221,11 @@
 			packageProductDependencies = (
 				4E92BE2128A6828F008D437F /* AVPlayerContainerKit */,
 				FF4203D1308D600000C25C71 /* UserDefaultsKit */,
+				FF4203F1308DF00000C25C71 /* SharedTaskKit */,
 			);
 			productName = AVPlayerContainerDemo;
 			productReference = 4E92BE0128A68047008D437F /* AVPlayerContainerDemo.app */;
 			productType = "com.apple.product-type.application";
-		};
-		FF4203DC308DA00000C25C71 /* AVPlayerContainerDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FF4203DF308DA00000C25C71 /* Build configuration list for PBXNativeTarget "AVPlayerContainerDemoTests" */;
-			buildPhases = (
-				FF4203D9308DA00000C25C71 /* Sources */,
-				FF4203DA308DA00000C25C71 /* Frameworks */,
-				FF4203DB308DA00000C25C71 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = AVPlayerContainerDemoTests;
-			productName = AVPlayerContainerDemoTests;
-			productReference = FF4203D7308DA00000C25C71 /* AVPlayerContainerDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -294,10 +239,6 @@
 				TargetAttributes = {
 					4E92BE0028A68047008D437F = {
 						CreatedOnToolsVersion = 13.4.1;
-					};
-					FF4203DC308DA00000C25C71 = {
-						CreatedOnToolsVersion = 13.4.1;
-						TestTargetID = 4E92BE0028A68047008D437F;
 					};
 				};
 			};
@@ -313,13 +254,13 @@
 			packageReferences = (
 				4E92BE1D28A681DA008D437F /* XCLocalSwiftPackageReference ".." */,
 				FF4203D0308D600000C25C71 /* XCRemoteSwiftPackageReference "UserDefaultsKit" */,
+				FF4203F2308DF00000C25C71 /* XCRemoteSwiftPackageReference "SharedTaskKit" */,
 			);
 			productRefGroup = 4E92BE0228A68047008D437F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				4E92BE0028A68047008D437F /* AVPlayerContainerDemo */,
-				FF4203DC308DA00000C25C71 /* AVPlayerContainerDemoTests */,
 			);
 		};
 /* End PBXProject section */
@@ -332,13 +273,6 @@
 				4E92BE1128A68048008D437F /* LaunchScreen.storyboard in Resources */,
 				4E92BE0E28A68048008D437F /* Assets.xcassets in Resources */,
 				4E92BE0C28A68047008D437F /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FF4203DB308DA00000C25C71 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,23 +313,6 @@
 				FF07741C3073D213001D6D76 /* Stream.swift in Sources */,
 				FF07742430889401001D6D76 /* StreamCell.swift in Sources */,
 				FF07742630889402001D6D76 /* StreamStore.swift in Sources */,
-				FF4203D4308D9A0000C25C71 /* TaskQueue.swift in Sources */,
-				FF4203E2308DB00000C25C71 /* Subscribers.swift in Sources */,
-				FF4203E7308DD00000C25C71 /* SharedTasks.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FF4203D9308DA00000C25C71 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FF4203D5308DA00000C25C71 /* TaskQueueTests.swift in Sources */,
-				FF4203E4308DC00000C25C71 /* SubscribersTests.swift in Sources */,
-				FF4203E0308DA00000C25C71 /* TaskQueue.swift in Sources */,
-				FF4203E5308DC00000C25C71 /* Subscribers.swift in Sources */,
-				FF4203E8308DD00000C25C71 /* SharedTasks.swift in Sources */,
-				FF4203EA308DE00000C25C71 /* SharedTasksTests.swift in Sources */,
-				FF4203EC308DE00000C25C71 /* TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,48 +510,6 @@
 			};
 			name = Release;
 		};
-		FF4203DD308DA00000C25C71 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SQ2J8S5B39;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tv.limehd.AVPlayerContainerDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		FF4203DE308DA00000C25C71 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = SQ2J8S5B39;
-				GENERATE_INFOPLIST_FILE = YES;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = tv.limehd.AVPlayerContainerDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -652,15 +527,6 @@
 			buildConfigurations = (
 				4E92BE1628A68048008D437F /* Debug */,
 				4E92BE1728A68048008D437F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FF4203DF308DA00000C25C71 /* Build configuration list for PBXNativeTarget "AVPlayerContainerDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FF4203DD308DA00000C25C71 /* Debug */,
-				FF4203DE308DA00000C25C71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -683,6 +549,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		FF4203F2308DF00000C25C71 /* XCRemoteSwiftPackageReference "SharedTaskKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:SwiftExtensions/SharedTaskKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -695,6 +569,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FF4203D0308D600000C25C71 /* XCRemoteSwiftPackageReference "UserDefaultsKit" */;
 			productName = UserDefaultsKit;
+		};
+		FF4203F1308DF00000C25C71 /* SharedTaskKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FF4203F2308DF00000C25C71 /* XCRemoteSwiftPackageReference "SharedTaskKit" */;
+			productName = SharedTaskKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

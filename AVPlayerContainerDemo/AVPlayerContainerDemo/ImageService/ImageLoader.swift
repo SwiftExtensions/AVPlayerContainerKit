@@ -5,56 +5,58 @@
 //  Created by Александр Алгашев on 23.10.2026.
 //
 
+import SharedTaskKit
 import UIKit
 
 /**
  Загрузчик изображений.
 
- Пока только загружает изображения по адресам. В дальнейшем будет
- хранить их в кэше.
+ Загружает изображения по адресам: запросы с одинаковым адресом делят
+ одну загрузку, число одновременных загрузок ограничено очередью,
+ а загрузка отменяется, когда у адреса не остаётся активных запросов.
+ Оркестрацией занимается `SharedTasks` из пакета `SharedTaskKit`,
+ загрузчик лишь описывает, как по адресу получить изображение.
 
- Актор: задачи загрузки запрашиваются многими ячейками одновременно,
- поэтому словарь задач защищён от гонки изоляцией актора.
+ Актор: запросы изображений приходят из многих задач одновременно,
+ поэтому доступ к пулу сериализован изоляцией актора.
  */
 actor ImageLoader {
     /**
-     Задачи загрузки изображений по адресам.
+     Пул задач загрузки по адресам.
+
+     Дедуплицирует загрузки с одинаковым адресом, ограничивает число
+     одновременных загрузок и отменяет задачу, когда у адреса не
+     остаётся активных запросов.
      */
-    private var loadingTasks: [URL: Task<UIImage, Swift.Error>] = [:]
+    private let imageTasks: SharedTasks<URL, UIImage>
+
+    /**
+     Создаёт загрузчик изображений.
+
+     - Parameter maxLoadingTasks: Максимальное число одновременных
+       загрузок. Задачи сверх лимита встают в очередь и запускаются,
+       когда место освобождается.
+     */
+    init(maxLoadingTasks: Int = 10) {
+        self.imageTasks = SharedTasks(
+            maxConcurrentTasks: maxLoadingTasks,
+            operation: { url in try await Self.loadImage(from: url) }
+        )
+    }
 
     /**
      Загружает изображение по адресу.
 
-     Если загрузка с этим адресом уже идёт, возвращается результат
-     существующей задачи — новая не запускается.
+     Каждый вызов — отдельный запрос: загрузки с тем же адресом делят
+     одну задачу, а отмена вызывающей задачи снимает ожидание только
+     этого запроса.
 
      - Parameter url: Адрес изображения.
      - Returns: Загруженное изображение.
      - Throws: Ошибка сетевой загрузки или неподходящего формата данных.
      */
     func image(from url: URL) async throws -> UIImage {
-        let task = self.loadingTasks[url] ?? self.startLoading(from: url)
-        self.loadingTasks[url] = task
-        defer {
-            // убираем запись, только если в словаре ещё лежит наша задача:
-            // отменённую могли удалить и заменить новой задачей с тем же адресом
-            if self.loadingTasks[url] == task {
-                self.loadingTasks[url] = nil
-            }
-        }
-
-        return try await task.value
-    }
-    /**
-     Создаёт задачу загрузки изображения.
-
-     - Parameter url: Адрес изображения.
-     - Returns: Созданная задача загрузки.
-     */
-    private func startLoading(from url: URL) -> Task<UIImage, Swift.Error> {
-        Task<UIImage, Swift.Error> {
-            try await self.loadImage(from: url)
-        }
+        try await self.imageTasks.value(for: url)
     }
     /**
      Загружает данные изображения и декодирует их.
@@ -63,7 +65,7 @@ actor ImageLoader {
      - Returns: Загруженное изображение.
      - Throws: Ошибка сетевой загрузки или некорректного ответа сервера.
      */
-    private func loadImage(from url: URL) async throws -> UIImage {
+    private static func loadImage(from url: URL) async throws -> UIImage {
         let (data, _) = try await URLSession.shared.data(from: url)
         guard let image = UIImage(data: data) else {
             throw URLError(.badServerResponse)
@@ -71,15 +73,7 @@ actor ImageLoader {
 
         return image
     }
-    /**
-     Отменяет загрузку изображения по адресу.
-
-     - Parameter url: Адрес изображения.
-     */
-    func cancelLoading(from url: URL) {
-        self.loadingTasks[url]?.cancel()
-        self.loadingTasks[url] = nil
-    }
 
 
 }
+

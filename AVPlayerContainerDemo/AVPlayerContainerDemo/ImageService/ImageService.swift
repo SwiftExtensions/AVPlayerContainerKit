@@ -62,27 +62,22 @@ final class ImageService {
         return image
     }
     /**
-     Отменяет загрузку изображения по адресу.
-
-     - Parameter urlString: Адрес изображения.
-     */
-    func cancelLoading(from urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        Task { await self.loader.cancelLoading(from: url) }
-    }
-    /**
      Загружает изображение по адресу и сообщает результат.
 
      Результат доставляется на главном акторе, поэтому в блоке можно
-     обновлять интерфейс.
+     обновлять интерфейс. Отмена возвращаемой задачи снимает ожидание
+     только этого запроса: загрузка продолжается, пока у адреса есть
+     другие запросы.
 
      - Parameter urlString: Адрес изображения.
      - Parameter completion: Результат загрузки: изображение или ошибка.
+     - Returns: Задача загрузки изображения с сообщением результата.
      */
+    @discardableResult
     func loadImage(
         from urlString: String,
         completion: @escaping @MainActor (Result<UIImage, any Error>) -> Void
-    ) {
+    ) -> Task<Void, Never> {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {

@@ -268,9 +268,7 @@ class PlaylistViewController: UITableViewController {
     ) {
         guard let playlistIndexPath = self.dataSource.normalized(indexPath) else { return }
         self.playlistService.cancelValidation(at: playlistIndexPath)
-        if let logoURLString = self.playlistService.stream(at: playlistIndexPath).attributes["tvg-logo"] {
-            self.imageService.cancelLoading(from: logoURLString)
-        }
+        (cell as? StreamCell)?.logoTask = nil
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -332,7 +330,7 @@ class PlaylistViewController: UITableViewController {
             cell.setLogo(nil)
             return
         }
-        self.imageService.loadImage(from: logoURLString) { [weak self] result in
+        cell.logoTask = self.imageService.loadImage(from: logoURLString) { [weak self] result in
             guard case .success(let image) = result else { return }
             // строка могла быть переиспользована под другой поток
             guard let displayIndexPath = self?.tableView.indexPath(for: cell) else { return }
