@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "git@github.com:SwiftExtensions/ActivityLabel.git",
       "state" : {
-        "revision" : "e6c5f5be5ce34bb9a5b3368a3096a4926aba6b7e",
-        "version" : "1.1.0"
+        "revision" : "bba11dbfb3f8bbb7442176966d692d9dd8f70c40",
+        "version" : "1.1.1"
       }
     },
     {
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftExtensions/AVPlayerKit",
       "state" : {
-        "revision" : "6a37f3751704e0e848be15f2b4df711a4e2f3154",
-        "version" : "2.7.1"
+        "revision" : "833be67d91aef36e12936dbfdc75c3d86fffa490",
+        "version" : "2.7.2"
       }
     },
     {
