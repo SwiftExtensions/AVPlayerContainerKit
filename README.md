@@ -1,6 +1,25 @@
 # AVPlayerContainerKit
 
-Синтактический сахар для быстрой интеграции [AVPlayer](https://developer.apple.com/documentation/avfoundation/avplayers).
+Синтаксический сахар для быстрой интеграции [AVPlayer](https://developer.apple.com/documentation/avfoundation/avplayers).
+
+Контейнер размещает на экране два контроллера — плеер и вспомогательный (например, плейлист). В портретной ориентации плеер занимает часть экрана, в альбомной разворачивается на весь. Плеер можно показывать и скрывать с анимацией сдвига, вспомогательный контроллер при этом подстраивается под оставшееся место. Поддерживается «картинка в картинке».
+
+## Требования
+
+- iOS 15+
+- Swift 5.6+
+
+## Установка
+
+Подключение через [Swift Package Manager](https://www.swift.org/package-manager/):
+
+``` swift
+dependencies: [
+    .package(url: "git@github.com:SwiftExtensions/AVPlayerContainerKit.git", from: "1.0.0")
+]
+```
+
+Пакет автоматически подтягивает зависимости — `AVPlayerKit` (включая продукт `AVPlayerUI`) и `ActivityLabel`.
 
 ## Пример интеграции
 
@@ -16,7 +35,8 @@ final class PlayerContainerViewController: AVPlayerContainerViewController<UIVie
         // Вспомогательный контроллер представления
         let secondaryViewController = UIViewController()
         // Добавить контроллеры представлений в контейнер
-        self.addChildWithDefaultPlayerViewController(
+        self.addChilds(
+            playerViewController: UIViewController(),
             secondaryViewController: secondaryViewController,
             isPlayerViewControllerPresented: true
         )
@@ -41,7 +61,6 @@ extension UINavigationController {
 import AVFoundation
 import UIKit
 
-import AVPlayerKit
 import AVPlayerContainerKit
 
 final class PlayerContainerViewController: AVPlayerContainerViewController<PlayerViewController> {
@@ -86,6 +105,13 @@ extension UINavigationController {
     
     
 }
+```
+
+## Картинка в картинке
+
+``` swift
+// Включить кнопку «картинка в картинке» в элементы управления плеера
+self.enablePictureInPicture()
 ```
 
 ## Демо-приложение
