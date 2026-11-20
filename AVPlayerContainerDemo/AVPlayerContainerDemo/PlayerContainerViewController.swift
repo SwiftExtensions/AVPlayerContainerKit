@@ -7,7 +7,6 @@
 
 import AVKit
 import UIKit
-import AVPlayerKit
 import AVPlayerContainerKit
 
 /**

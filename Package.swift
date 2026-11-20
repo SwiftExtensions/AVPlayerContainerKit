@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/SwiftExtensions/AVPlayerKit", from: "2.7.2"),
+        .package(url: "https://github.com/SwiftExtensions/AVPlayerKit", from: "3.0.0"),
 //        .package(url: "https://github.com/SwiftExtensions/AVPlayerKit", branch: "main"),
     ],
     targets: [
@@ -24,7 +24,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "AVPlayerContainerKit",
-            dependencies: ["AVPlayerKit"]),
+            dependencies: [
+                .product(name: "AVPlayerKit", package: "AVPlayerKit"),
+                .product(name: "AVPlayerUI", package: "AVPlayerKit"),
+            ]),
         .testTarget(
             name: "AVPlayerContainerKitTests",
             dependencies: ["AVPlayerContainerKit"]),
